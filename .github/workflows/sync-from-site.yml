@@ -1,0 +1,36 @@
+name: Sync From Site
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync files from site
+        shell: pwsh
+        run: .\scripts\sync-from-site.ps1
+
+      - name: Commit and push changes
+        shell: pwsh
+        run: |
+          if (-not (git diff --quiet)) {
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore: sync from site"
+            git push
+          } else {
+            Write-Host "No changes to commit."
+          }
