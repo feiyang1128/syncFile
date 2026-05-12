@@ -26,8 +26,19 @@ $excludedPrefixes = @(
     "scripts/"
 )
 
+$excludedPaths = @(
+    "README.md",
+    ".github/workflows/sync-from-site.yml"
+)
+
 $files = Get-ChildItem -Path $repoRoot -File -Recurse | Where-Object {
     $relativePath = Get-RelativePath -Root $repoRoot -Path $_.FullName
+    foreach ($excludedPath in $excludedPaths) {
+        if ($relativePath.Equals($excludedPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+            return $false
+        }
+    }
+
     foreach ($prefix in $excludedPrefixes) {
         if ($relativePath.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)) {
             return $false
