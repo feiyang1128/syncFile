@@ -1,13 +1,21 @@
 param(
-    [string]$BaseUrl = "https://tv.feiyangyyds.cf"
+    [string]$ConfigPath = ""
 )
 
 $ErrorActionPreference = "Stop"
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$baseUri = [System.Uri]::new(($BaseUrl.TrimEnd("/") + "/"))
+$defaultConfigPath = Join-Path $PSScriptRoot "sync-from-site.json"
 
-function Get-RelativePath {
+if ([string]::IsNullOrWhiteSpace($ConfigPath)) {
+    $ConfigPath = $defaultConfigPath
+}
+
+if (-not (Test-Path -LiteralPath $ConfigPath)) {
+    throw "Sync config file not found: $ConfigPath"
+}
+
+function Get-RepoRelativePath {
     param(
         [string]$Root,
         [string]$Path
@@ -21,64 +29,142 @@ function Get-RelativePath {
     throw "Path '$Path' is outside of repo root '$Root'."
 }
 
-$excludedPrefixes = @(
-    ".git/",
-    "scripts/"
-)
+function Resolve-RepoFilePath {
+    param(
+        [string]$Root,
+        [string]$RelativePath
+    )
 
-$excludedPaths = @(
-    "README.md",
-    ".github/workflows/sync-from-site.yml"
-)
+    $fullPath = [System.IO.Path]::GetFullPath((Join-Path $Root $RelativePath))
+    $null = Get-RepoRelativePath -Root $Root -Path $fullPath
 
-$files = Get-ChildItem -Path $repoRoot -File -Recurse | Where-Object {
-    $relativePath = Get-RelativePath -Root $repoRoot -Path $_.FullName
-    foreach ($excludedPath in $excludedPaths) {
-        if ($relativePath.Equals($excludedPath, [System.StringComparison]::OrdinalIgnoreCase)) {
-            return $false
-        }
-    }
-
-    foreach ($prefix in $excludedPrefixes) {
-        if ($relativePath.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)) {
-            return $false
-        }
-    }
-    return $true
+    return $fullPath
 }
 
-if (-not $files) {
-    Write-Host "No local files found to sync."
-    exit 0
+function Ensure-ParentDirectory {
+    param(
+        [string]$FilePath
+    )
+
+    $parent = Split-Path -Parent $FilePath
+    if ($parent -and -not (Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    }
 }
 
-$downloaded = @()
-$missing = @()
+function Get-SyncEntries {
+    param(
+        [string]$Path
+    )
 
-foreach ($file in $files) {
-    $relativePath = Get-RelativePath -Root $repoRoot -Path $file.FullName
-    $remoteUri = [System.Uri]::new($baseUri, $relativePath)
+    $config = Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json
+
+    if (-not $config -or -not $config.files) {
+        throw "Config file '$Path' must contain a 'files' array."
+    }
+
+    $entries = @($config.files)
+
+    if ($entries.Count -eq 0) {
+        Write-Host "No sync entries found in $Path."
+        exit 0
+    }
+
+    return $entries
+}
+
+function Test-IsNotFoundResponse {
+    param(
+        [System.Management.Automation.ErrorRecord]$ErrorRecord
+    )
+
+    $response = $ErrorRecord.Exception.Response
+    return $response -and [int]$response.StatusCode -eq 404
+}
+
+function Sync-FileEntry {
+    param(
+        [string]$Root,
+        [pscustomobject]$Entry
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Entry.path)) {
+        throw "Each sync entry must define a non-empty 'path'."
+    }
+    if ([string]::IsNullOrWhiteSpace($Entry.url)) {
+        throw "Sync entry for '$($Entry.path)' must define a non-empty 'url'."
+    }
+
+    $relativePath = $Entry.path.Replace("\", "/")
+    $filePath = Resolve-RepoFilePath -Root $Root -RelativePath $relativePath
+    $remoteUri = [System.Uri]::new($Entry.url)
+    Ensure-ParentDirectory -FilePath $filePath
+    $tempFilePath = [System.IO.Path]::GetTempFileName()
 
     try {
-        Invoke-WebRequest -Uri $remoteUri -OutFile $file.FullName -UseBasicParsing | Out-Null
-        $downloaded += $relativePath
-        Write-Host "Synced $relativePath"
+        Invoke-WebRequest -Uri $remoteUri -OutFile $tempFilePath -UseBasicParsing | Out-Null
+        Move-Item -LiteralPath $tempFilePath -Destination $filePath -Force
+        return [PSCustomObject]@{
+            Status = "Synced"
+            Path = $relativePath
+        }
     }
     catch {
-        $response = $_.Exception.Response
-        if ($response -and [int]$response.StatusCode -eq 404) {
-            $missing += $relativePath
-            Write-Host "Skipped $relativePath (404)"
-            continue
+        if (Test-IsNotFoundResponse -ErrorRecord $_) {
+            return [PSCustomObject]@{
+                Status = "Missing"
+                Path = $relativePath
+            }
         }
 
-        throw
+        $message = $_.Exception.Message
+        return [PSCustomObject]@{
+            Status = "Failed"
+            Path = $relativePath
+            Error = $message
+        }
+    }
+    finally {
+        if (Test-Path -LiteralPath $tempFilePath) {
+            Remove-Item -LiteralPath $tempFilePath -Force
+        }
     }
 }
 
-Write-Host ""
-Write-Host ("Synced {0} file(s)." -f $downloaded.Count)
+function Write-Summary {
+    param(
+        [object[]]$Results
+    )
 
-if ($missing.Count -gt 0) {
-    Write-Host ("Skipped {0} missing file(s)." -f $missing.Count)
+    $synced = @($Results | Where-Object { $_.Status -eq "Synced" })
+    $missing = @($Results | Where-Object { $_.Status -eq "Missing" })
+    $failed = @($Results | Where-Object { $_.Status -eq "Failed" })
+
+    foreach ($item in $synced) {
+        Write-Host ("[OK] {0}" -f $item.Path)
+    }
+
+    foreach ($item in $missing) {
+        Write-Host ("[SKIP] {0} (404)" -f $item.Path)
+    }
+
+    foreach ($item in $failed) {
+        Write-Host ("[FAIL] {0}" -f $item.Path)
+        Write-Host ("       {0}" -f $item.Error)
+    }
+
+    Write-Host ""
+    Write-Host "Summary"
+    Write-Host ("  OK:   {0}" -f $synced.Count)
+    Write-Host ("  Skip: {0}" -f $missing.Count)
+    Write-Host ("  Fail: {0}" -f $failed.Count)
+
+    return $failed.Count -gt 0
 }
+
+$entries = Get-SyncEntries -Path $ConfigPath
+$results = foreach ($entry in $entries) {
+    Sync-FileEntry -Root $repoRoot -Entry $entry
+}
+
+$null = Write-Summary -Results $results

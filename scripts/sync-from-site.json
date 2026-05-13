@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "path": "TV/tvbox.json",
+      "url": "https://tv.feiyangyyds.cf/tvbox.json"
+    },
+    {
+      "path": "Mihomo/rename.js",
+      "url": "https://raw.githubusercontent.com/Keywos/rule/main/rename.js"
+    },
+    {
+      "path": "Mihomo/reject.txt",
+      "url": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+    },
+    {
+      "path": "Mihomo/AI.txt",
+      "url": "https://raw.githubusercontent.com/xiaolin-007/clash/refs/heads/main/rule/AI.txt"
+    }
+  ]
+}
