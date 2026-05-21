@@ -165,7 +165,7 @@ function Set-UpdatedTimestampComment {
     $normalizedContent = $existingContent
     $escapedPrefix = [System.Text.RegularExpressions.Regex]::Escape($commentPrefix)
     $escapedSuffix = [System.Text.RegularExpressions.Regex]::Escape($commentSuffix)
-    $pattern = "^(?:$escapedPrefix更新时间:\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$escapedSuffix(?:\r?\n)?)"
+    $pattern = "^(?:${escapedPrefix}更新时间:\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}${escapedSuffix}(?:\r?\n)?)"
     if ($normalizedContent -match $pattern) {
         $normalizedContent = [System.Text.RegularExpressions.Regex]::Replace(
             $normalizedContent,
