@@ -82,6 +82,109 @@ function Test-IsNotFoundResponse {
     return $response -and [int]$response.StatusCode -eq 404
 }
 
+function Get-BeijingTimestamp {
+    $utcNow = [System.DateTime]::UtcNow
+    $beijingZone = [System.TimeZoneInfo]::FindSystemTimeZoneById("China Standard Time")
+    $beijingNow = [System.TimeZoneInfo]::ConvertTimeFromUtc($utcNow, $beijingZone)
+    return $beijingNow.ToString("yyyy-MM-dd HH:mm:ss")
+}
+
+function Get-TimestampCommentStyle {
+    param(
+        [string]$FilePath
+    )
+
+    $extension = [System.IO.Path]::GetExtension($FilePath).ToLowerInvariant()
+    $lineCommentSlashExtensions = @(
+        ".js", ".cjs", ".mjs", ".ts", ".tsx", ".jsx",
+        ".java", ".c", ".h", ".cc", ".cpp", ".hpp", ".cs",
+        ".go", ".rs", ".swift", ".kt", ".kts", ".scala",
+        ".dart", ".php", ".scss", ".less"
+    )
+    $hashCommentExtensions = @(
+        ".yaml", ".yml", ".py", ".rb", ".pl", ".pm",
+        ".sh", ".bash", ".zsh", ".ps1", ".psm1", ".psd1",
+        ".toml", ".conf", ".config", ".env", ".txt", ".properties"
+    )
+    $semicolonCommentExtensions = @(".ini", ".cfg")
+    $dashCommentExtensions = @(".sql", ".lua")
+    $xmlCommentExtensions = @(".html", ".htm", ".xml", ".svg", ".md")
+    $unsupportedExtensions = @(
+        ".json", ".jsonc", ".lock", ".png", ".jpg", ".jpeg", ".gif",
+        ".webp", ".ico", ".pdf", ".zip", ".7z", ".rar", ".gz",
+        ".mp3", ".mp4", ".mov", ".exe", ".dll", ".bin"
+    )
+
+    if ($extension -in $unsupportedExtensions) {
+        return $null
+    }
+    if ($extension -in $lineCommentSlashExtensions) {
+        return @{ Prefix = "// "; Suffix = "" }
+    }
+    if ($extension -in $hashCommentExtensions) {
+        return @{ Prefix = "# "; Suffix = "" }
+    }
+    if ($extension -in $semicolonCommentExtensions) {
+        return @{ Prefix = "; "; Suffix = "" }
+    }
+    if ($extension -in $dashCommentExtensions) {
+        return @{ Prefix = "-- "; Suffix = "" }
+    }
+    if ($extension -in $xmlCommentExtensions) {
+        return @{ Prefix = "<!-- "; Suffix = " -->" }
+    }
+
+    return @{ Prefix = "# "; Suffix = "" }
+}
+
+function Set-UpdatedTimestampComment {
+    param(
+        [string]$FilePath
+    )
+
+    $commentStyle = Get-TimestampCommentStyle -FilePath $FilePath
+    if ($null -eq $commentStyle) {
+        return
+    }
+
+    $timestamp = Get-BeijingTimestamp
+    $commentPrefix = [string]$commentStyle.Prefix
+    $commentSuffix = [string]$commentStyle.Suffix
+    $timestampLine = "{0}更新时间:{1}{2}" -f $commentPrefix, $timestamp, $commentSuffix
+    $existingContent = ""
+
+    if (Test-Path -LiteralPath $FilePath) {
+        $existingContent = Get-Content -LiteralPath $FilePath -Raw
+    }
+
+    $newline = "`r`n"
+    if ($existingContent -match "`n" -and $existingContent -notmatch "`r`n") {
+        $newline = "`n"
+    }
+
+    $normalizedContent = $existingContent
+    $escapedPrefix = [System.Text.RegularExpressions.Regex]::Escape($commentPrefix)
+    $escapedSuffix = [System.Text.RegularExpressions.Regex]::Escape($commentSuffix)
+    $pattern = "^(?:$escapedPrefix更新时间:\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$escapedSuffix(?:\r?\n)?)"
+    if ($normalizedContent -match $pattern) {
+        $normalizedContent = [System.Text.RegularExpressions.Regex]::Replace(
+            $normalizedContent,
+            $pattern,
+            "",
+            [System.Text.RegularExpressions.RegexOptions]::Multiline
+        )
+    }
+
+    $updatedContent = if ([string]::IsNullOrEmpty($normalizedContent)) {
+        $timestampLine + $newline
+    }
+    else {
+        $timestampLine + $newline + $normalizedContent
+    }
+
+    [System.IO.File]::WriteAllText($FilePath, $updatedContent, [System.Text.UTF8Encoding]::new($false))
+}
+
 function Sync-FileEntry {
     param(
         [string]$Root,
@@ -104,6 +207,7 @@ function Sync-FileEntry {
     try {
         Invoke-WebRequest -Uri $remoteUri -OutFile $tempFilePath -UseBasicParsing | Out-Null
         Move-Item -LiteralPath $tempFilePath -Destination $filePath -Force
+        Set-UpdatedTimestampComment -FilePath $filePath
         return [PSCustomObject]@{
             Status = "Synced"
             Path = $relativePath
