@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     env:
       RELEASE_TAG: synced-assets-latest
-      RELEASE_TITLE: Latest Synced Assets
+      RELEASE_TITLE: 最新同步资源
       RELEASE_MIN_BYTES: 104857600
 
     steps:
@@ -82,7 +82,7 @@ jobs:
 
           gh release view $env:RELEASE_TAG *> $null
           if ($LASTEXITCODE -ne 0) {
-            gh release create $env:RELEASE_TAG --title $env:RELEASE_TITLE --notes "Latest auto-managed large sync assets." --latest
+            gh release create $env:RELEASE_TAG --title $env:RELEASE_TITLE --notes "自动同步的大文件资源。" --latest
           }
 
           $expectedAssetNames = @($releaseAssets | ForEach-Object { $_.assetName })
