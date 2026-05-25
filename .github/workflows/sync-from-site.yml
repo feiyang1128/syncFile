@@ -11,6 +11,10 @@ permissions:
 jobs:
   sync:
     runs-on: windows-latest
+    env:
+      RELEASE_TAG: synced-assets-latest
+      RELEASE_TITLE: Latest Synced Assets
+      RELEASE_MIN_BYTES: 104857600
 
     steps:
       - name: Checkout repository
@@ -22,13 +26,95 @@ jobs:
         shell: pwsh
         run: .\scripts\sync-from-site.ps1
 
+      - name: Classify synced files for release
+        id: classify
+        shell: pwsh
+        run: |
+          $repoRoot = (Get-Location).Path
+          $thresholdBytes = [int64]$env:RELEASE_MIN_BYTES
+          $entries = @((Get-Content .\scripts\sync-from-site.json -Raw | ConvertFrom-Json).files)
+          $releaseCandidates = @()
+
+          foreach ($entry in $entries) {
+            if ([string]::IsNullOrWhiteSpace($entry.path)) {
+              continue
+            }
+
+            $fullPath = [System.IO.Path]::GetFullPath((Join-Path $repoRoot $entry.path))
+            if (-not (Test-Path -LiteralPath $fullPath)) {
+              continue
+            }
+
+            $file = Get-Item -LiteralPath $fullPath
+            $relativePath = $entry.path.Replace("\", "/")
+            $extension = $file.Extension.ToLowerInvariant()
+            $shouldUseRelease = $extension -eq ".apk" -or $file.Length -ge $thresholdBytes
+
+            if ($shouldUseRelease) {
+              $releaseCandidates += [PSCustomObject]@{
+                relativePath = $relativePath
+                fullPath = $file.FullName
+                assetName = [System.IO.Path]::GetFileName($relativePath)
+                sizeBytes = $file.Length
+              }
+            }
+          }
+
+          $manifestPath = Join-Path $env:RUNNER_TEMP "release-assets.json"
+          $manifestJson = if ($releaseCandidates.Count -gt 0) {
+            $releaseCandidates | ConvertTo-Json -Depth 4
+          } else {
+            "[]"
+          }
+          Set-Content -LiteralPath $manifestPath -Value $manifestJson -Encoding utf8
+
+          "manifest_path=$manifestPath" >> $env:GITHUB_OUTPUT
+          "release_count=$($releaseCandidates.Count)" >> $env:GITHUB_OUTPUT
+
+      - name: Publish release-managed assets
+        if: steps.classify.outputs.release_count != '0'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $manifestPath = "${{ steps.classify.outputs.manifest_path }}"
+          $releaseAssets = @(Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json)
+
+          gh release view $env:RELEASE_TAG *> $null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $env:RELEASE_TAG --title $env:RELEASE_TITLE --notes "Latest auto-managed large sync assets." --latest
+          }
+
+          $expectedAssetNames = @($releaseAssets | ForEach-Object { $_.assetName })
+          $existingAssets = @(gh release view $env:RELEASE_TAG --json assets --jq ".assets[].name")
+          foreach ($assetName in $existingAssets) {
+            if ($expectedAssetNames -contains $assetName) {
+              gh release delete-asset $env:RELEASE_TAG $assetName --yes
+            }
+          }
+
+          foreach ($asset in $releaseAssets) {
+            gh release upload $env:RELEASE_TAG $asset.fullPath --clobber
+          }
+
       - name: Commit and push changes
         shell: pwsh
         run: |
-          if (-not (git diff --quiet)) {
+          $manifestPath = "${{ steps.classify.outputs.manifest_path }}"
+          $releaseAssets = @()
+          if (Test-Path -LiteralPath $manifestPath) {
+            $releaseAssets = @(Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json)
+          }
+
+          git add -A
+
+          foreach ($asset in $releaseAssets) {
+            git reset HEAD -- $asset.relativePath
+          }
+
+          if (-not (git diff --cached --quiet)) {
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -A
             git commit -m "chore: sync syncFile data"
             git push
           } else {

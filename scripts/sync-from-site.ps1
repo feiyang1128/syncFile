@@ -109,13 +109,13 @@ function Get-TimestampCommentStyle {
     $semicolonCommentExtensions = @(".ini", ".cfg")
     $dashCommentExtensions = @(".sql", ".lua")
     $xmlCommentExtensions = @(".html", ".htm", ".xml", ".svg", ".md")
-    $unsupportedExtensions = @(
+    $binaryExtensions = @(
         ".json", ".jsonc", ".lock", ".png", ".jpg", ".jpeg", ".gif",
         ".webp", ".ico", ".pdf", ".zip", ".7z", ".rar", ".gz",
-        ".mp3", ".mp4", ".mov", ".exe", ".dll", ".bin"
+        ".mp3", ".mp4", ".mov", ".exe", ".dll", ".bin", ".apk"
     )
 
-    if ($extension -in $unsupportedExtensions) {
+    if ($extension -in $binaryExtensions) {
         return $null
     }
     if ($extension -in $lineCommentSlashExtensions) {
