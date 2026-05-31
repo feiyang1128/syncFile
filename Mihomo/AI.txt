@@ -1,4 +1,4 @@
-# 更新时间:2026-06-01 04:47:20
+# 更新时间:2026-06-01 05:47:52
 payload:
   - DOMAIN-KEYWORD,anthropic
   - DOMAIN-KEYWORD,claude
