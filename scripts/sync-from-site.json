@@ -5,6 +5,10 @@
       "url": "https://tv.feiyangyyds.cf/tvbox.json"
     },
     {
+      "path": "TV/monntv.json",
+      "url": "https://tv.feiyangyyds.cf/moontv.json"
+    },
+    {
       "path": "Mihomo/rename.js",
       "url": "https://raw.githubusercontent.com/Keywos/rule/main/rename.js"
     },
