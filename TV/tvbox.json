@@ -10,7 +10,7 @@
       "filterable": 1
     },
     {
-      "key": "dytt",
+      "key": "dianyingtiantang",
       "name": "电影天堂",
       "type": 1,
       "api": "http://caiji.dyttzyapi.com/api.php/provide/vod/?ac=list",
@@ -28,7 +28,7 @@
       "filterable": 1
     },
     {
-      "key": "mtzy",
+      "key": "maotaizy",
       "name": "茅台资源",
       "type": 1,
       "api": "https://caiji.maotaizy.cc/api.php/provide/vod/at/josn/",
@@ -37,7 +37,7 @@
       "filterable": 1
     },
     {
-      "key": "jszy",
+      "key": "jisuzy",
       "name": "极速资源",
       "type": 1,
       "api": "https://jszyapi.com/api.php/provide/vod/at/json",
@@ -46,7 +46,7 @@
       "filterable": 1
     },
     {
-      "key": "jyzy",
+      "key": "jinyingzy",
       "name": "金鹰资源",
       "type": 1,
       "api": "https://jyzyapi.com/provide/vod",
@@ -55,10 +55,55 @@
       "filterable": 1
     },
     {
-      "key": "lzzy",
+      "key": "liangzizy",
       "name": "量子资源",
       "type": 1,
       "api": "https://cj.lziapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
+      "key": "hongniuzy",
+      "name": "红牛资源",
+      "type": 1,
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    { 
+      "key": "xiguazy",
+      "name": "西瓜资源",
+      "type": 1,
+      "api": "https://caiji.xgzyapi.com/api.php/provide/vod/",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    { 
+      "key": "yayazy",
+      "name": "鸭鸭资源",
+      "type": 1,
+      "api": "https://cj.yayazy.net/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    }, 
+    { 
+      "key": "ruyizy",
+      "name": "如意资源",
+      "type": 1,
+      "api": "https://cj.rycjapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    { 
+      "key": "maoyanzy",
+      "name": "猫眼资源",
+      "type": 1,
+      "api": "https://api.maoyanapi.top/api.php/provide/vod",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
