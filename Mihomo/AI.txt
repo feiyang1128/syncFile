@@ -1,4 +1,4 @@
-# 更新时间:2026-07-01 10:53:03
+# 更新时间:2026-07-01 15:03:19
 payload:
   - DOMAIN-KEYWORD,anthropic
   - DOMAIN-KEYWORD,claude
@@ -49,3 +49,11 @@ payload:
   - DOMAIN-SUFFIX,perplexity.ai
   - DOMAIN-SUFFIX,sora.com
   - DOMAIN-SUFFIX,x.ai
+  - DOMAIN-SUFFIX,smoot.apple.com
+  - DOMAIN,guzzoni.apple.com
+  - DOMAIN,gspe1-ssl.ls.apple.com
+  - DOMAIN,apple-relay.mask.apple-dns.net
+  - DOMAIN,apple-relay.fastly-edge.com
+  - DOMAIN,apple-relay.apple.com
+  - DOMAIN,apple-relay.cloudflare.com
+  - DOMAIN,cp4.cloudflare.com
