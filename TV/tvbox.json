@@ -108,11 +108,20 @@
       "quickSearch": 1,
       "filterable": 1
     },
-        { 
+    { 
       "key": "huyazy",
       "name": "虎牙资源",
       "type": 1,
       "api": "https://www.huyaapi.com/api.php/provide/vod",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },    
+    { 
+      "key": "wsyzy",
+      "name": "无水印资源",
+      "type": 1,
+      "api": "https://api.wsyzy.net/api.php/provide/vod",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
