@@ -2,11 +2,11 @@
   "files": [
     {
       "path": "TV/tvbox.json",
-      "url": "https://tv.feiyangyyds.cf/tvbox.json"
+      "url": "https://tvconfig.feiyangs.cn/tvbox.json"
     },
     {
       "path": "TV/monntv.json",
-      "url": "https://tv.feiyangyyds.cf/moontv.json"
+      "url": "https://tvconfig.feiyangs.cn/moontv.json"
     },
     {
       "path": "Mihomo/rename.js",
@@ -22,7 +22,7 @@
     },
     {
       "path": "Apps/telegram.apk",
-      "url": "https://file.feiyang.gq/TG/telegram.apk"
+      "url": "https://file.feiyangs.cn/TG/telegram.apk"
     }
   ]
 }
