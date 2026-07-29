@@ -9,14 +9,15 @@
       "quickSearch": 1,
       "filterable": 1
     },
-    {
-      "key":"okzy",
-      "name":"OK资源",
-      "type":1,
-      "api":"https://okzy.feiyangs.cn/",
-      "searchable":1,
-      "quickSearch":1
-    },
+   {
+  "key": "okzy",
+  "name": "OK资源",
+  "type": 1,
+  "api": "https://okzy.feiyangs.cn/",
+  "searchable": 1,
+  "quickSearch": 1,
+  "filterable": 1
+   },
     {
       "key": "dianyingtiantang",
       "name": "电影天堂",
@@ -80,7 +81,7 @@
       "quickSearch": 1,
       "filterable": 1
     },
-    { 
+    {
       "key": "xiguazy",
       "name": "西瓜资源",
       "type": 1,
@@ -89,7 +90,7 @@
       "quickSearch": 1,
       "filterable": 1
     },
-    { 
+    {
       "key": "yayazy",
       "name": "鸭鸭资源",
       "type": 1,
@@ -97,8 +98,8 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
-    }, 
-    { 
+    },
+    {
       "key": "ruyizy",
       "name": "如意资源",
       "type": 1,
@@ -107,7 +108,7 @@
       "quickSearch": 1,
       "filterable": 1
     },
-    { 
+    {
       "key": "maoyanzy",
       "name": "猫眼资源",
       "type": 1,
@@ -116,7 +117,7 @@
       "quickSearch": 1,
       "filterable": 1
     },
-    { 
+    {
       "key": "huyazy",
       "name": "虎牙资源",
       "type": 1,
@@ -125,6 +126,5 @@
       "quickSearch": 1,
       "filterable": 1
     }
-
   ]
 }
