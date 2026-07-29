@@ -116,15 +116,6 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
-    },
-    { 
-      "key": "98zy",
-      "name": "98资源",
-      "type": 1,
-      "api": "https://98zy.vip/api.php/provide/vod",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1
     }
   ]
 }
