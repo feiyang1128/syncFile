@@ -1,0 +1,13 @@
+# https://mihomo.party/docs/guide/override/yaml
+
+# | 规则                  | 示例                                     | 匹配说明                                                                 |
+# | --------------------- | ---------------------------------------- | -------------------------------------------------------------------------|
+# | `DOMAIN`              | `DOMAIN,google.com,DIRECT`               | 精确匹配 `google.com`，不匹配 `www.google.com`。                         |
+# | `DOMAIN-KEYWORD`      | `DOMAIN-KEYWORD,google,DIRECT`           | 匹配包含 `google` 的所有域名，如 `google.com`、`google123.com`。         |
+# | `DOMAIN-SUFFIX`       | `DOMAIN-SUFFIX,google.com,DIRECT`        | 匹配以 `google.com` 结尾的域名，如 `mail.google.com`、`www.google.com`。 |
+# | `IP-CIDR`             | `IP-CIDR,192.168.1.0/24,DIRECT`          | 匹配 `192.168.1.0` 到 `192.168.1.255` 范围的所有 IP 地址。               |
+# | `GEOIP`               | `GEOIP,CN,DIRECT`                        | 匹配中国地区（CN）的所有 IP 地址。                                       |
+# | `DOMAIN-KEYWORD-FULL` | `DOMAIN-KEYWORD-FULL,google,DIRECT`      | 精确匹配 `google` 的域名，如 `google.com`，不匹配 `google123.com`。      |
+
++rules:
+  - DOMAIN-KEYWORD,seakoi,DIRECT
