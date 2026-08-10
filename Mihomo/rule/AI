@@ -23,7 +23,7 @@ rule-providers:
     aiRule:  
          type: http
          behavior: classical
-         url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/AI.txt"
+         url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/AI.txt"
          path: ./rule/aiRule.yaml
          interval: 3600
 +rules:
