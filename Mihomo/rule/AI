@@ -18,7 +18,7 @@ proxy-groups+:
     interval: 300
     lazy: true
     #filter: "日本|JP|Japan|新加坡|SG|Singapore|美国|US|USA"  保留的节点
-    exclude-filter: "(?i)v6|香港|HK|🇭🇰|台湾|TW|🇹🇼|澳门|MO|🇲🇴|🇨🇳" #删除的节点
+    exclude-filter: "(?i)v6|套餐|到期|有效|剩余|版本|已用|过期|失联|测试|官方|网址|备用|群|TEST|客服|网站|获取|订阅|流量|机场|下次|官址|联系|邮箱|工单|学术|USE|USED|TOTAL|EXPIRE|EMAIL|香港|HK|🇭🇰|台湾|TW|🇹🇼|澳门|MO|🇲🇴|🇨🇳" #删除的节点
 rule-providers:
     aiRule:  
          type: http
