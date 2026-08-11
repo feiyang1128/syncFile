@@ -11,9 +11,9 @@ const overrideConfig = {
   // =====================
   // 策略组配置
   // =====================
-  // groups: [
-  //   {
+  // groups: [ 
   //     // 完整的 Mihomo 策略组配置
+  //   {
   //     config: {
   //       name: '专线',
   //       type: 'url-test',
@@ -76,7 +76,7 @@ const overrideConfig = {
   //     // type 为 http 时可省略，默认 3600 秒
   //     interval: 3600,
   //     // type 为 inline 时必填，此时不需要 url 和 path
-  //     payload: ['DOMAIN-SUFFIX,openai.com'],
+  //     // payload: ['DOMAIN-SUFFIX,openai.com'],
   //   },
   // ],
   // =====================
