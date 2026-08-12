@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     env:
       RELEASE_TAG: synced-assets-latest
-      RELEASE_TITLE: 1.0
+      RELEASE_TITLE: latest
       RELEASE_MIN_BYTES: 104857600
 
     steps:
