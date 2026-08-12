@@ -9,15 +9,15 @@
       "quickSearch": 1,
       "filterable": 1
     },
-   {
-  "key": "okzy",
-  "name": "OK资源",
-  "type": 1,
-  "api": "https://okzy.feiyangs.cn/",
-  "searchable": 1,
-  "quickSearch": 1,
-  "filterable": 1
-   },
+    {
+      "key": "okzy",
+      "name": "OK资源", 
+      "type": 1,
+      "api": "https://okzy.feiyangs.cn/",
+      "searchable": 1, 
+      "quickSearch": 1, 
+      "filterable": 1
+    },
     {
       "key": "dianyingtiantang",
       "name": "电影天堂",
