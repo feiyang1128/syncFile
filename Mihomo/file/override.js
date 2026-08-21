@@ -1,5 +1,5 @@
 // JavaScript Override
-// 单文件覆写入口：配置在这里维护，下面包含通用处理逻辑。
+// 通用：创建/重置分组、插入策略组、添加外部规则资源
 
 // =====================
 // 用户配置
@@ -11,8 +11,8 @@ const overrideConfig = {
   // =====================
   // 策略组配置
   // =====================
-  // groups: [
-  //   // 完整的 Mihomo 策略组配置
+  // groups: [ 
+  //     // 完整的 Mihomo 策略组配置
   //   {
   //     config: {
   //       name: '专线',
@@ -101,35 +101,12 @@ const overrideConfig = {
   // },
 };
 
-// JavaScript Override core
-// 通用：创建/重置分组、插入策略组、添加外部规则资源
-
 // =====================
-// 主逻辑
+// 主函数
 // =====================
 
 function main(config) {
-  return applyOverrideConfig(config, getOverrideConfig());
-}
-
-function getOverrideConfig() {
-  if (typeof globalThis !== 'undefined' && typeof globalThis.loadOverrideConfig === 'function') {
-    return globalThis.loadOverrideConfig();
-  }
-
-  if (typeof overrideConfig === 'object' && overrideConfig) {
-    return overrideConfig;
-  }
-
-  if (typeof globalThis !== 'undefined' && globalThis.overrideConfig && typeof globalThis.overrideConfig === 'object') {
-    return globalThis.overrideConfig;
-  }
-
-  return {};
-}
-
-function applyOverrideConfig(config, configOverride) {
-  const userConfig = configOverride && typeof configOverride === 'object' ? configOverride : {};
+  const userConfig = overrideConfig && typeof overrideConfig === 'object' ? overrideConfig : {};
 
   // 空配置时原样返回，不给订阅补充任何空字段
   if (!hasOverrideConfig(userConfig)) {
@@ -146,18 +123,6 @@ function applyOverrideConfig(config, configOverride) {
   applyRules(tools, userConfig.rules);
 
   return config;
-}
-
-if (typeof globalThis !== 'undefined') {
-  globalThis.main = main;
-  globalThis.applyOverrideConfig = applyOverrideConfig;
-}
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    main,
-    applyOverrideConfig,
-  };
 }
 
 // 判断是否存在需要执行的用户配置
