@@ -88,3 +88,16 @@ rule-providers:
     url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/proxy.list
     path: ./ruleset/proxy.list
     interval: 21600
+
+rules:
+  - RULE-SET,cloudflare-extra,🌍 cloudflare
+  - RULE-SET,direct,🎯 全球直连
+  - RULE-SET,unban,🎯 全球直连
+  - RULE-SET,reject-extra,🛑 全球拦截
+  - RULE-SET,reject-ad,🛑 全球拦截
+  - RULE-SET,ai,✨ AI
+  - RULE-SET,cloudflareip,🌍 cloudflare
+  - RULE-SET,ipv6,🌐 IPV6
+  - RULE-SET,proxy,🚀 节点选择
+  - GEOIP,CN,🎯 全球直连
+  - MATCH,🐟 漏网之鱼
