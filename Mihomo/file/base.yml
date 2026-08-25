@@ -23,3 +23,68 @@ dns:
     nameserver-policy: [gfw]
     ipcidr: [240.0.0.0/4]
     domain: [+.google.com, +.facebook.com, +.youtube.com]
+
+rule-providers:
+  cloudflare-extra:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/cloudflare-extra.list
+    path: ./ruleset/cloudflare-extra.list
+    interval: 21600
+  direct:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/direct.list
+    path: ./ruleset/direct.list
+    interval: 21600
+  unban:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list
+    path: ./ruleset/unban.list
+    interval: 21600
+  reject-extra:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/reject-extra.list
+    path: ./ruleset/reject-extra.list
+    interval: 21600
+  reject-ad:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/reject-ad.list
+    path: ./ruleset/reject-ad.list
+    interval: 21600
+  ai:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/AI.list
+    path: ./ruleset/ai.list
+    interval: 21600
+  cloudflareip:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/cloudflareip.list
+    path: ./ruleset/cloudflareip.list
+    interval: 21600
+  ipv6:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/ipv6.list
+    path: ./ruleset/ipv6.list
+    interval: 21600
+  proxy:
+    type: http
+    behavior: classical
+    format: text
+    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/proxy.list
+    path: ./ruleset/proxy.list
+    interval: 21600
