@@ -25,12 +25,11 @@ jobs:
           import urllib.request
 
           base = Path("Mihomo/file")
-          list_dir = base / "list"
-          list_dir.mkdir(parents=True, exist_ok=True)
+          yaml_dir = base / "yaml"
+          yaml_dir.mkdir(parents=True, exist_ok=True)
 
           sources = {
-              list_dir / "AI.list": base / "AI.txt",
-              list_dir / "cloudflareip.list": "https://raw.githubusercontent.com/feiyang1128/cf-ip/main/cloudflareip.txt",
+              yaml_dir / "unban.yaml": "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list",
           }
 
           ad_sources = [
@@ -91,12 +90,17 @@ jobs:
                   if not line or line == "payload:":
                       continue
                   if line.startswith("#"):
-                      out.append(line)
                       continue
-                  if not line.startswith("- "):
-                      continue
-                  out.append(normalize_item(line[2:]))
-              return "\n".join(out).rstrip() + "\n"
+                  if line.startswith("- "):
+                      line = line[2:]
+                  out.append(normalize_item(line))
+              return to_yaml_payload(out)
+
+          def to_yaml_payload(rules):
+              lines = ["payload:"]
+              for rule in rules:
+                  lines.append("  - '" + rule.replace("'", "''") + "'")
+              return "\n".join(lines).rstrip() + "\n"
 
           for dst, src in sources.items():
               dst.write_text(convert(read_source(src)), encoding="utf-8")
@@ -109,12 +113,8 @@ jobs:
                       continue
                   ad_rules.setdefault(line, None)
 
-          ad_header = "\n".join([
-              "# ACL4SSR ad blocking rules aggregated for faster subweb loading",
-              "# Sources: BanAD, BanProgramAD, BanEasyList, BanEasyListChina, BanEasyPrivacy",
-          ])
-          (list_dir / "reject-ad.list").write_text(
-              ad_header + "\n" + "\n".join(ad_rules.keys()) + "\n",
+          (yaml_dir / "reject-ad.yaml").write_text(
+              to_yaml_payload(ad_rules.keys()),
               encoding="utf-8",
           )
 
@@ -126,7 +126,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Mihomo/file/list/AI.list Mihomo/file/list/cloudflareip.list Mihomo/file/list/reject-ad.list
+          git add Mihomo/file/yaml/unban.yaml Mihomo/file/yaml/reject-ad.yaml
           if git diff --cached --quiet; then
             echo "No changes"
           else
