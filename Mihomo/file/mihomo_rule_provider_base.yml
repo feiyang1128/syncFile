@@ -24,6 +24,86 @@ dns:
     ipcidr: [240.0.0.0/4]
     domain: [+.google.com, +.facebook.com, +.youtube.com]
 
+proxy-groups:
+  - name: 🚀 节点选择
+    type: select
+    proxies: [♻️ 自动选择, 🌐 IPV6, DIRECT, 🔮 负载-轮询, 🔮 负载-散列, 🔯 故障转移]
+    include-all: true
+    exclude-filter: "(?i)v6|ipv6"
+  - name: ♻️ 自动选择
+    type: url-test
+    include-all: true
+    exclude-type: direct
+    exclude-filter: "(?i)v6|ipv6"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    lazy: true
+  - name: 🌐 IPV6
+    type: url-test
+    proxies: [DIRECT]
+    include-all: true
+    url: http://[2400:3200::1]
+    interval: 300
+    tolerance: 30
+    lazy: true
+  - name: ✨ AI
+    type: url-test
+    include-all: true
+    exclude-type: direct
+    exclude-filter: "(?i)v6|ipv6|香港|HK|台湾|TW|澳门|MO|🇭🇰|🇹🇼|🇲🇴|🇨🇳|套餐|到期|有效|剩余|版本|已用|过期|失联|测试|官网|网址|备用|群|TEST|客服|网站|获取|订阅|流量|机场|下次|官址|联系|邮箱|工单|学术|USE|USED|TOTAL|EXPIRE|EMAIL"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    lazy: true
+  - name: 🌍 cloudflare
+    type: url-test
+    include-all: true
+    exclude-type: direct
+    exclude-filter: "(?i)cf|cloudflare"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    lazy: true
+  - name: 🔮 负载-轮询
+    type: load-balance
+    include-all: true
+    exclude-type: direct
+    exclude-filter: "(?i)v6|ipv6"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    strategy: round-robin
+    lazy: true
+  - name: 🔮 负载-散列
+    type: load-balance
+    include-all: true
+    exclude-type: direct
+    exclude-filter: "(?i)v6|ipv6"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    strategy: consistent-hashing
+    lazy: true
+  - name: 🔯 故障转移
+    type: fallback
+    include-all: true
+    exclude-type: direct
+    exclude-filter: "(?i)v6|ipv6"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    lazy: true
+  - name: 🎯 全球直连
+    type: select
+    proxies: [DIRECT, 🚀 节点选择, ♻️ 自动选择]
+  - name: 🛑 全球拦截
+    type: select
+    proxies: [REJECT, DIRECT]
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies: [🚀 节点选择, 🎯 全球直连, ♻️ 自动选择]
+    include-all: true
+
 rule-providers:
   cloudflare-extra:
     type: http
