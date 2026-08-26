@@ -44,7 +44,13 @@ enable_rule_generator=false
 overwrite_original_rules=false
 ```
 
-策略组由 `Mihomo/file/feiyang_custom.ini` 中的 `custom_proxy_group` 生成，规则集由 `Mihomo/file/mihomo_rule_provider_base.yml` 维护。当前策略组包含：
+策略组源文件是 `Mihomo/file/proxy-groups.yml`，运行脚本后会生成 `Mihomo/file/feiyang_custom.ini` 中的 `custom_proxy_group`：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\generate-mihomo-custom.ps1
+```
+
+规则集由 `Mihomo/file/mihomo_rule_provider_base.yml` 维护。当前策略组包含：
 
 - `🚀 节点选择`、`♻️ 自动选择`、`🌐 IPV6`、`✨ AI`、`🌍 cloudflare`
 - `🔮 负载-轮询`、`🔮 负载-散列`、`🔯 故障转移`
@@ -56,7 +62,7 @@ overwrite_original_rules=false
 interval: 300
 ```
 
-注意：当前 `custom_proxy_group` 的 INI 写法不稳定支持 `lazy: true`，不要把策略组挪到 `mihomo_rule_provider_base.yml`，否则订阅转换后可能出现规则引用的策略组不存在。
+注意：最终给订阅转换使用的仍然是 `custom_proxy_group`。不要把策略组挪到 `mihomo_rule_provider_base.yml`，否则订阅转换后可能出现规则引用的策略组不存在。
 
 ## 规则来源
 
@@ -87,6 +93,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install-git-hooks.ps1
 ```
 
 启用后，任何已暂存文件只要大于等于 `104857600` 字节，也就是 `100 MiB`，提交时都会被拦截；小于 `100 MiB` 的文件正常提交。这个判断不区分 `.apk`、`.zip` 或其它后缀。
+
+同一个 hook 也会校验 `Mihomo/file/proxy-groups.yml` 和 `Mihomo/file/feiyang_custom.ini` 是否一致；如果不一致，会提示先运行 `scripts/generate-mihomo-custom.ps1`。
 
 自动同步 workflow 也只按文件大小判断同步下来的文件是进入 Git 提交，还是发布到 GitHub Release：
 
