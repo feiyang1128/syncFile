@@ -47,8 +47,7 @@ jobs:
 
             $file = Get-Item -LiteralPath $fullPath
             $relativePath = $entry.path.Replace("\", "/")
-            $extension = $file.Extension.ToLowerInvariant()
-            $shouldUseRelease = $extension -eq ".apk" -or $file.Length -ge $thresholdBytes
+            $shouldUseRelease = $file.Length -ge $thresholdBytes
 
             if ($shouldUseRelease) {
               $releaseCandidates += [PSCustomObject]@{

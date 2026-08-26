@@ -1,0 +1,23 @@
+#!/bin/sh
+
+limit_bytes=104857600
+temp_file=$(mktemp)
+
+git diff --cached --name-only --diff-filter=ACMRT > "$temp_file"
+
+while IFS= read -r path; do
+  [ -z "$path" ] && continue
+
+  size=$(git cat-file -s ":$path" 2>/dev/null || echo 0)
+
+  if [ "$size" -ge "$limit_bytes" ]; then
+    printf 'Blocked large staged file: %s (%s bytes)\n' "$path" "$size" >&2
+    rm -f "$temp_file"
+    printf '\nFiles >= 100 MiB should not be committed to Git. Upload them as release assets instead.\n' >&2
+    exit 1
+  fi
+done < "$temp_file"
+
+rm -f "$temp_file"
+
+exit 0
