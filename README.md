@@ -39,24 +39,24 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-from-site.ps1
 
 ```ini
 clash_rule_base=https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base.yml
+custom_proxy_group=...
 enable_rule_generator=false
 overwrite_original_rules=false
 ```
 
-主要策略组和规则集在 `Mihomo/file/mihomo_rule_provider_base.yml` 中维护。当前配置包含：
+策略组由 `Mihomo/file/feiyang_custom.ini` 中的 `custom_proxy_group` 生成，规则集由 `Mihomo/file/mihomo_rule_provider_base.yml` 维护。当前策略组包含：
 
 - `🚀 节点选择`、`♻️ 自动选择`、`🌐 IPV6`、`✨ AI`、`🌍 cloudflare`
 - `🔮 负载-轮询`、`🔮 负载-散列`、`🔯 故障转移`
 - `🎯 全球直连`、`🛑 全球拦截`、`🐟 漏网之鱼`
 
-所有会进行延迟测试的策略组都统一设置为：
+所有会进行延迟测试的策略组都统一设置为 5 分钟测试一次：
 
-```yaml
+```ini
 interval: 300
-lazy: true
 ```
 
-也就是 5 分钟测试一次，并且未使用的策略组不主动参与延迟测试。
+注意：当前 `custom_proxy_group` 的 INI 写法不稳定支持 `lazy: true`，不要把策略组挪到 `mihomo_rule_provider_base.yml`，否则订阅转换后可能出现规则引用的策略组不存在。
 
 ## 规则来源
 
