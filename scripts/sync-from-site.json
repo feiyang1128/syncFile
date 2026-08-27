@@ -10,15 +10,15 @@
     },
     {
       "path": "Mihomo/file/rename.js",
-      "url": "https://raw.githubusercontent.com/Keywos/rule/main/rename.js"
+      "url": "https://gh-proxy.org/https://raw.githubusercontent.com/Keywos/rule/main/rename.js"
     },
     {
       "path": "Mihomo/file/reject.txt",
-      "url": "https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
+      "url": "https://gh-proxy.org/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
     },
     {
       "path": "Mihomo/file/AI.txt",
-      "url": "https://raw.githubusercontent.com/xiaolin-007/clash/refs/heads/main/rule/AI.txt"
+      "url": "https://gh-proxy.org/https://raw.githubusercontent.com/xiaolin-007/clash/refs/heads/main/rule/AI.txt"
     },
     {
       "path": "Apps/telegram.apk",

@@ -38,7 +38,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-from-site.ps1
 订阅转换入口配置在 `Mihomo/file/feiyang_custom.ini`：
 
 ```ini
-clash_rule_base=https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base.yml
+clash_rule_base=https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base.yml
 ruleset=...
 custom_proxy_group=...
 enable_rule_generator=true

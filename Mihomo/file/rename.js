@@ -30,7 +30,7 @@
  *** 保留参数
  * [blkey=iplc+gpt+NF+IPLC] 用+号添加多个关键词 保留节点名的自定义字段 需要区分大小写!
  * 如果需要修改 保留的关键词 替换成别的 可以用 > 分割 例如 [#blkey=GPT>新名字+其他关键词] 这将把【GPT】替换成【新名字】
- * 例如      https://raw.githubusercontent.com/Keywos/rule/main/rename.js#flag&blkey=GPT>新名字+NF
+ * 例如      https://gh-proxy.org/https://raw.githubusercontent.com/Keywos/rule/main/rename.js#flag&blkey=GPT>新名字+NF
  * [blgd]   保留: 家宽 IPLC ˣ² 等
  * [bl]     正则匹配保留 [0.1x, x0.2, 6x ,3倍]等标识
  * [nx]     保留1倍率与不显示倍率的
