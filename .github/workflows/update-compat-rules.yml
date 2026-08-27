@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Convert payload rules
+      - name: Update list rules
         shell: bash
         run: |
           python3 <<'PY'
@@ -25,20 +25,14 @@ jobs:
           import urllib.request
 
           base = Path("Mihomo/file")
-          yaml_dir = base / "yaml"
-          yaml_dir.mkdir(parents=True, exist_ok=True)
+          list_dir = base / "list"
+          list_dir.mkdir(parents=True, exist_ok=True)
 
           sources = {
-              yaml_dir / "unban.yaml": "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list",
+              list_dir / "unban.list": "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list",
+              list_dir / "reject.list": base / "reject.txt",
+              list_dir / "AI.list": base / "AI.txt",
           }
-
-          ad_sources = [
-              "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list",
-              "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list",
-              "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyList.list",
-              "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyListChina.list",
-              "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanEasyPrivacy.list",
-          ]
 
           typed_prefixes = (
               "DOMAIN,",
@@ -94,29 +88,10 @@ jobs:
                   if line.startswith("- "):
                       line = line[2:]
                   out.append(normalize_item(line))
-              return to_yaml_payload(out)
-
-          def to_yaml_payload(rules):
-              lines = ["payload:"]
-              for rule in rules:
-                  lines.append("  - '" + rule.replace("'", "''") + "'")
-              return "\n".join(lines).rstrip() + "\n"
+              return "\n".join(out).rstrip() + "\n"
 
           for dst, src in sources.items():
               dst.write_text(convert(read_source(src)), encoding="utf-8")
-
-          ad_rules = {}
-          for src in ad_sources:
-              for raw in read_source(src).splitlines():
-                  line = raw.strip()
-                  if not line or line.startswith("#"):
-                      continue
-                  ad_rules.setdefault(line, None)
-
-          (yaml_dir / "reject-ad.yaml").write_text(
-              to_yaml_payload(ad_rules.keys()),
-              encoding="utf-8",
-          )
 
           print("lists updated")
           PY
@@ -126,7 +101,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Mihomo/file/yaml/unban.yaml Mihomo/file/yaml/reject-ad.yaml
+          git add Mihomo/file/list/unban.list Mihomo/file/list/reject.list Mihomo/file/list/AI.list
           if git diff --cached --quiet; then
             echo "No changes"
           else
