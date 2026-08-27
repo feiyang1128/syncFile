@@ -53,13 +53,6 @@ rule-providers:
     url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/reject-extra.yaml
     path: ./feiyang/reject-extra.yaml
     interval: 21600
-  reject-ad:
-    type: http
-    behavior: classical
-    format: yaml
-    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/reject-ad.yaml
-    path: ./feiyang/reject-ad.yaml
-    interval: 21600
   reject:
     type: http
     behavior: domain
@@ -101,7 +94,6 @@ rules:
   - RULE-SET,direct,🎯 全球直连
   - RULE-SET,unban,🎯 全球直连
   - RULE-SET,reject-extra,🛑 全球拦截
-  - RULE-SET,reject-ad,🛑 全球拦截
   - RULE-SET,reject,🛑 全球拦截
   - RULE-SET,ai,✨ AI
   - RULE-SET,cloudflareip,🌍 cloudflare
