@@ -29,70 +29,70 @@ rule-providers:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yaml/cloudflare-extra.yaml
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/cloudflare-extra.yaml
     path: ./feiyang/cloudflare-extra.yaml
     interval: 21600
   direct:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yaml/direct.yaml
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/direct.yaml
     path: ./feiyang/direct.yaml
     interval: 21600
   unban:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yaml/unban.yaml
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/unban.yaml
     path: ./feiyang/unban.yaml
     interval: 21600
   reject-extra:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yaml/reject-extra.yaml
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/reject-extra.yaml
     path: ./feiyang/reject-extra.yaml
     interval: 21600
   reject-ad:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yaml/reject-ad.yaml
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/reject-ad.yaml
     path: ./feiyang/reject-ad.yaml
     interval: 21600
   reject:
     type: http
     behavior: domain
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/reject.txt
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/reject.txt
     path: ./feiyang/reject.yaml
     interval: 21600
   ai:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/AI.txt
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/AI.txt
     path: ./feiyang/AI.yaml
     interval: 21600
   cloudflareip:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/cf-ip/main/cloudflareip.txt
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/cf-ip@main/cloudflareip.txt
     path: ./feiyang/cloudflareip.yaml
     interval: 21600
   ipv6:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yaml/ipv6.yaml
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/ipv6.yaml
     path: ./feiyang/ipv6.yaml
     interval: 21600
   proxy:
     type: http
     behavior: classical
     format: yaml
-    url: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yaml/proxy.yaml
+    url: https://cdn.jsdelivr.net/gh/feiyang1128/syncFile@main/Mihomo/file/yaml/proxy.yaml
     path: ./feiyang/proxy.yaml
     interval: 21600
 
