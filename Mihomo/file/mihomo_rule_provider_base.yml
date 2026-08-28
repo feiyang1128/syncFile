@@ -23,3 +23,71 @@ dns:
     nameserver-policy: [gfw]
     ipcidr: [240.0.0.0/4]
     domain: [+.google.com, +.facebook.com, +.youtube.com]
+rule-providers:
+  CloudflareExtra:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/cloudflare-extra.list"
+    path: ./feiyang/CloudflareExtra.yaml
+    interval: 3600
+  Direct:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/direct.list"
+    path: ./feiyang/Direct.yaml
+    interval: 3600
+  Unban:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/unban.list"
+    path: ./feiyang/Unban.yaml
+    interval: 3600
+  RejectExtra:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/reject-extra.list"
+    path: ./feiyang/RejectExtra.yaml
+    interval: 3600
+  AI:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/AI.list"
+    path: ./feiyang/AI.yaml
+    interval: 3600
+  CloudflareIP:
+    type: http
+    behavior: ipcidr
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/cf-ip/main/cloudflareip.txt"
+    path: ./feiyang/CloudflareIP.yaml
+    interval: 3600
+  IPV6:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/ipv6.list"
+    path: ./feiyang/IPV6.yaml
+    interval: 3600
+  Proxy:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/proxy.list"
+    path: ./feiyang/Proxy.yaml
+    interval: 3600
+rules:
+  - RULE-SET,CloudflareExtra,🌍 cloudflare
+  - RULE-SET,Direct,🎯 全球直连
+  - RULE-SET,Unban,🎯 全球直连
+  - RULE-SET,RejectExtra,🛑 全球拦截
+  - RULE-SET,AI,✨ AI
+  - RULE-SET,CloudflareIP,🌍 cloudflare
+  - RULE-SET,IPV6,🌐 IPV6
+  - RULE-SET,Proxy,🚀 节点选择
+  - GEOIP,CN,🎯 全球直连
+  - MATCH,🐟 漏网之鱼
