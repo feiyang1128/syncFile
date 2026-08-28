@@ -65,7 +65,7 @@ interval: 180
 `Mihomo/file/mihomo_rule_provider_base.yml` 通过 `rule-providers` 引用的 list 规则集包括：
 
 - `direct`、`proxy`、`ipv6`、`cloudflare-extra`、`reject-extra`
-- `reject.list`：来自 Loyalsoldier reject 列表，当前只同步不启用
+- `reject.list`：来自 Loyalsoldier reject 列表
 - `ai`：来自 AI 分流规则
 - `unban`：由 workflow 从 ACL4SSR 同步生成
 

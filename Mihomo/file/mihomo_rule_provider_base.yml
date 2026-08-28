@@ -52,6 +52,13 @@ rule-providers:
     url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/reject-extra.list"
     path: ./feiyang/RejectExtra.yaml
     interval: 3600
+  Reject:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/reject.list"
+    path: ./feiyang/Reject.yaml
+    interval: 3600
   AI:
     type: http
     behavior: classical
@@ -85,6 +92,7 @@ rules:
   - RULE-SET,Direct,🎯 全球直连
   - RULE-SET,Unban,🎯 全球直连
   - RULE-SET,RejectExtra,🛑 全球拦截
+  - RULE-SET,Reject,🛑 全球拦截
   - RULE-SET,AI,✨ AI
   - RULE-SET,CloudflareIP,🌍 cloudflare
   - RULE-SET,IPV6,🌐 IPV6
