@@ -35,17 +35,16 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-from-site.ps1
 
 ## Mihomo 配置
 
-订阅转换入口配置在 `Mihomo/file/feiyang_custom.ini`：
+订阅转换入口配置在 `Mihomo/file/feiyang_custom.yml`：
 
-```ini
-clash_rule_base=https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base.yml
-ruleset=...
-custom_proxy_group=...
-enable_rule_generator=true
-overwrite_original_rules=true
+```yaml
+custom:
+  clash_rule_base: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base_groups.yml
+  enable_rule_generator: true
+  overwrite_original_rules: true
 ```
 
-策略组由 `Mihomo/file/feiyang_custom.ini` 中的 `custom_proxy_group` 生成，规则由同一文件中的 `ruleset` 引用 `Mihomo/file/list/` 生成。`Mihomo/file/mihomo_rule_provider_base.yml` 只维护 Mihomo 基础设置。当前策略组包含：
+YAML 配置负责订阅转换规则集，策略组写在 `Mihomo/file/mihomo_rule_provider_base_groups.yml` 中，以便原生 Mihomo 配置显式设置 `lazy: false`。当前策略组包含：
 
 - `🚀 节点选择`、`♻️ 自动选择`、`🌐 IPV6`、`✨ AI`、`🌍 cloudflare`
 - `🔮 负载-轮询`、`🔮 负载-散列`、`🔯 故障转移`
@@ -57,11 +56,9 @@ overwrite_original_rules=true
 interval: 180
 ```
 
-注意：策略组已写入 `mihomo_rule_provider_base.yml`，用原生 Mihomo 配置显式设置 `lazy: false`，让测速组在客户端支持时尽量主动进行健康检查。
-
 ## 规则来源
 
-`Mihomo/file/feiyang_custom.ini` 引用的 list 规则集包括：
+`Mihomo/file/feiyang_custom.yml` 引用的 list 规则集包括：
 
 - `direct`、`proxy`、`ipv6`、`cloudflare-extra`、`reject-extra`
 - `reject`：来自 Loyalsoldier reject 列表

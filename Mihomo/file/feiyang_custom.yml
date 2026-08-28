@@ -1,0 +1,25 @@
+custom:
+  clash_rule_base: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base_groups.yml"
+  enable_rule_generator: true
+  overwrite_original_rules: true
+  rulesets:
+    - group: 🌍 cloudflare
+      ruleset: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/cloudflare-extra.list"
+    - group: 🎯 全球直连
+      ruleset: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/direct.list"
+    - group: 🎯 全球直连
+      ruleset: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/unban.list"
+    - group: 🛑 全球拦截
+      ruleset: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/reject-extra.list"
+    - group: ✨ AI
+      ruleset: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/AI.list"
+    - group: 🌍 cloudflare
+      ruleset: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/cf-ip/main/cloudflareip.txt"
+    - group: 🌐 IPV6
+      ruleset: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/ipv6.list"
+    - group: 🚀 节点选择
+      ruleset: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/proxy.list"
+    - group: 🎯 全球直连
+      rule: GEOIP,CN
+    - group: 🐟 漏网之鱼
+      rule: FINAL
