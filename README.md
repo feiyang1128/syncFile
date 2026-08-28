@@ -6,7 +6,7 @@
 
 - `TV/`：TVBox、MoonTV 等配置文件。
 - `Mihomo/file/`：Mihomo 配置、规则源、重命名脚本和兼容规则。
-- `Mihomo/file/list/`：订阅转换使用的 Clash list 规则集。
+- `Mihomo/file/list/`：`rule-providers` 使用的 Clash list 规则集。
 - `scripts/`：从远端 URL 同步文件的脚本和清单。
 - `app/`：手动纳入仓库的小体积 APK。
 
@@ -65,15 +65,15 @@ interval: 180
 `Mihomo/file/mihomo_rule_provider_base.yml` 通过 `rule-providers` 引用的 list 规则集包括：
 
 - `direct`、`proxy`、`ipv6`、`cloudflare-extra`、`reject-extra`
-- `reject.list`：来自 Loyalsoldier reject 列表
-- `ai`：来自 AI 分流规则
-- `unban`：由 workflow 从 ACL4SSR 同步生成
+- `reject`：来自 `Mihomo/file/reject.txt`
+- `ai`：来自 `Mihomo/file/AI.txt`
+- `unban`：由 `scripts/sync-from-site.json` 从 ACL4SSR 同步
 
-`Update Mihomo rules` workflow 每 6 小时运行一次，会更新：
+`syncFile` workflow 每小时运行一次，会按 `scripts/sync-from-site.json` 更新：
 
 - `Mihomo/file/list/unban.list`
-- `Mihomo/file/list/reject.list`
-- `Mihomo/file/list/AI.list`
+- `Mihomo/file/reject.txt`
+- `Mihomo/file/AI.txt`
 
 ## APK 和大文件
 
@@ -104,4 +104,3 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install-git-hooks.ps1
 仓库包含两个 GitHub Actions：
 
 - `syncFile`：每小时运行一次，按 `scripts/sync-from-site.json` 同步远端文件。
-- `Update Mihomo rules`：每 6 小时运行一次，转换并更新部分 Mihomo 兼容规则。

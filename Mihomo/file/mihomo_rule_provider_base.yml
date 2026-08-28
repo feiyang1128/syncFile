@@ -55,15 +55,13 @@ rule-providers:
   Reject:
     type: http
     behavior: classical
-    format: text
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/reject.list"
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/reject.txt"
     path: ./feiyang/Reject.yaml
     interval: 3600
   AI:
     type: http
     behavior: classical
-    format: text
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/AI.list"
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/AI.txt"
     path: ./feiyang/AI.yaml
     interval: 3600
   CloudflareIP:
