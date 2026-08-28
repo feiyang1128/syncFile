@@ -18,7 +18,7 @@ custom:
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
       url: "http://www.gstatic.com/generate_204"
-      interval: 180
+      interval: 120
       tolerance: 50
       lazy: false
     - name: 🌐 IPV6
@@ -27,7 +27,7 @@ custom:
         - "[]DIRECT"
         - ".*"
       url: "http://[2400:3200::1]"
-      interval: 180
+      interval: 120
       tolerance: 50
       lazy: false
     - name: ✨ AI
@@ -35,7 +35,7 @@ custom:
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6|香港|HK|台湾|TW|澳门|MO|🇭🇰|🇹🇼|🇲🇴|🇨🇳|套餐|到期|有效|剩余|版本|已用|过期|失联|测试|官网|网址|频道|备用|群|TEST|客服|网站|获取|订阅|流量|机场|下次|官址|联系|邮箱|工单|学术|USE|USED|TOTAL|EXPIRE|EMAIL)).*$"
       url: "http://www.gstatic.com/generate_204"
-      interval: 180
+      interval: 120
       tolerance: 50
       lazy: false
     - name: 🌍 cloudflare
@@ -43,7 +43,7 @@ custom:
       rule:
         - "^(?!.*(cf|CF|cloudflare|Cloudflare|CLOUDFLARE)).*$"
       url: "http://www.gstatic.com/generate_204"
-      interval: 180
+      interval: 120
       tolerance: 50
       lazy: false
     - name: 🔮 负载-轮询
@@ -51,7 +51,7 @@ custom:
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
       url: "http://www.gstatic.com/generate_204"
-      interval: 180
+      interval: 120
       tolerance: 50
       strategy: round-robin
       lazy: false
@@ -60,7 +60,7 @@ custom:
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
       url: "http://www.gstatic.com/generate_204"
-      interval: 180
+      interval: 120
       tolerance: 50
       strategy: consistent-hashing
       lazy: false
@@ -69,7 +69,7 @@ custom:
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
       url: "http://www.gstatic.com/generate_204"
-      interval: 180
+      interval: 120
       lazy: false
     - name: 🎯 全球直连
       type: select
