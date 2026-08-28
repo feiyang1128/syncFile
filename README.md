@@ -39,12 +39,16 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-from-site.ps1
 
 ```yaml
 custom:
-  clash_rule_base: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base_groups.yml
+  clash_rule_base: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base.yml
   enable_rule_generator: true
   overwrite_original_rules: true
+  proxy_groups:
+    - name: ♻️ 自动选择
+      type: url-test
+      lazy: false
 ```
 
-YAML 配置负责订阅转换规则集，策略组写在 `Mihomo/file/mihomo_rule_provider_base_groups.yml` 中，以便原生 Mihomo 配置显式设置 `lazy: false`。当前策略组包含：
+YAML 配置负责订阅转换规则集和策略组；`Mihomo/file/mihomo_rule_provider_base.yml` 只维护 Mihomo 基础设置。策略组使用对象式 `proxy_groups` 显式设置 `lazy: false`。当前策略组包含：
 
 - `🚀 节点选择`、`♻️ 自动选择`、`🌐 IPV6`、`✨ AI`、`🌍 cloudflare`
 - `🔮 负载-轮询`、`🔮 负载-散列`、`🔯 故障转移`
