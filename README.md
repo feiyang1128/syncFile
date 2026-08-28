@@ -57,7 +57,7 @@ overwrite_original_rules=true
 interval: 180
 ```
 
-注意：当前 `custom_proxy_group` 的 INI 写法不稳定支持 `lazy: true`，不要把策略组挪到 `mihomo_rule_provider_base.yml`，否则订阅转换后可能出现规则引用的策略组不存在。
+注意：策略组已写入 `mihomo_rule_provider_base.yml`，用原生 Mihomo 配置显式设置 `lazy: false`，让测速组在客户端支持时尽量主动进行健康检查。
 
 ## 规则来源
 
