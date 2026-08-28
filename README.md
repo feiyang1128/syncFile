@@ -51,10 +51,10 @@ overwrite_original_rules=true
 - `🔮 负载-轮询`、`🔮 负载-散列`、`🔯 故障转移`
 - `🎯 全球直连`、`🛑 全球拦截`、`🐟 漏网之鱼`
 
-所有会进行延迟测试的策略组都统一设置为 5 分钟测试一次：
+所有会进行延迟测试的策略组都统一设置为 3 分钟测试一次：
 
 ```ini
-interval: 300
+interval: 180
 ```
 
 注意：当前 `custom_proxy_group` 的 INI 写法不稳定支持 `lazy: true`，不要把策略组挪到 `mihomo_rule_provider_base.yml`，否则订阅转换后可能出现规则引用的策略组不存在。

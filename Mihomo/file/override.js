@@ -21,7 +21,7 @@ const overrideConfig = {
   //       'exclude-type': 'direct',
   //       filter: '专线',
   //       url: 'https://www.gstatic.com/generate_204',
-  //       interval: 300,
+  //       interval: 180,
   //       lazy: true,
   //     },
   //     // add：不存在时添加，已存在时跳过
