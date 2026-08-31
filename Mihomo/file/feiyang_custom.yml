@@ -42,7 +42,8 @@ custom:
       type: url-test
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
-      url: "https://cp.cloudflare.com/generate_204"
+      url: "https://speed.cloudflare.com/__down?bytes=1000"
+      expected-status: 200
       interval: 120
       tolerance: 50
       lazy: false
