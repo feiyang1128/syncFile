@@ -42,7 +42,7 @@ custom:
       type: url-test
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
-      url: "https://speed.cloudflare.com/__down?bytes=1000"
+      url: "https://speed.cloudflare.com/__down?bytes=0"
       expected-status: 200
       interval: 120
       tolerance: 50
