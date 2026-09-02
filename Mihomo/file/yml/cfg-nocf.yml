@@ -9,9 +9,9 @@ custom:
         - "[]♻️ 自动选择"
         - "[]🌐 IPV6"
         - "[]DIRECT"
-        - "[]🔁 负载-轮询"
-        - "[]🔀 负载-散列"
-        - "[]🔄 故障转移"
+        - "[]🔮 负载-轮询"
+        - "[]🔮 负载-散列"
+        - "[]🔯 故障转移"
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
     - name: ♻️ 自动选择
       type: url-test
@@ -38,7 +38,7 @@ custom:
       interval: 120
       tolerance: 50
       lazy: false
-    - name: 🔁 负载-轮询
+    - name: 🔮 负载-轮询
       type: load-balance
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
@@ -47,7 +47,7 @@ custom:
       tolerance: 50
       strategy: round-robin
       lazy: false
-    - name: 🔀 负载-散列
+    - name: 🔮 负载-散列
       type: load-balance
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
@@ -56,7 +56,7 @@ custom:
       tolerance: 50
       strategy: consistent-hashing
       lazy: false
-    - name: 🔄 故障转移
+    - name: 🔯 故障转移
       type: fallback
       rule:
         - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
