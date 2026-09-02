@@ -38,11 +38,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-from-site.ps1
 
 ## Mihomo 配置
 
-订阅转换入口配置在 `Mihomo/file/yml/feiyang_custom.yml`：
+订阅转换入口配置在 `Mihomo/file/yml/cfg-all.yml`：
 
 ```yaml
 custom:
-  clash_rule_base: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yml/mihomo_rule_provider_base.yml
+  clash_rule_base: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yml/base-all.yml
   enable_rule_generator: false
   overwrite_original_rules: true
   proxy_groups:
@@ -51,7 +51,16 @@ custom:
       lazy: false
 ```
 
-YAML 配置负责订阅转换策略组；`Mihomo/file/yml/mihomo_rule_provider_base.yml` 维护 Mihomo 基础设置、`rule-providers` 和 `rules`。策略组使用对象式 `proxy_groups` 显式设置 `lazy: false`。当前策略组包含：
+当前入口配置：
+
+- `cfg-all.yml`：完整配置
+- `cfg-no6.yml`：不带 IPV6
+- `cfg-nocf.yml`：不带 cloudflare
+- `cfg-no6nocf.yml`：不带 IPV6 和 cloudflare
+
+对应规则底座：`base-all.yml`、`base-no6.yml`、`base-nocf.yml`、`base-no6nocf.yml`。
+
+YAML 配置负责订阅转换策略组；`Mihomo/file/yml/base-all.yml` 维护 Mihomo 基础设置、`rule-providers` 和 `rules`。策略组使用对象式 `proxy_groups` 显式设置 `lazy: false`。当前策略组包含：
 
 - `🚀 节点选择`、`♻️ 自动选择`、`🌐 IPV6`、`✨ AI`、`🌍 cloudflare`
 - `🔮 负载-轮询`、`🔮 负载-散列`、`🔯 故障转移`
@@ -65,7 +74,7 @@ interval: 180
 
 ## 规则来源
 
-`Mihomo/file/yml/mihomo_rule_provider_base.yml` 通过 `rule-providers` 引用的规则集包括：
+`Mihomo/file/yml/base-all.yml` 通过 `rule-providers` 引用的规则集包括：
 
 - `list`：`direct`、`proxy`、`unban`
 - `txt`：`ipv6`、`cloudflare-extra`、`reject-extra`

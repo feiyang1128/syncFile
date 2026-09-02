@@ -1,0 +1,81 @@
+mixed-port: 7890
+allow-lan: false
+bind-address: '*'
+mode: rule
+log-level: info
+external-controller: '127.0.0.1:9090'
+unified-delay: true
+tcp-concurrent: true
+dns:
+  enable: true
+  ipv6: false
+  default-nameserver: [223.5.5.5, 119.29.29.29, 114.114.114.114]
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  use-hosts: true
+  respect-rules: true
+  proxy-server-nameserver: [223.5.5.5, 119.29.29.29, 114.114.114.114]
+  nameserver: [223.5.5.5, 119.29.29.29, 114.114.114.114]
+  fallback: [1.1.1.1, 8.8.8.8]
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    nameserver-policy: [gfw]
+    ipcidr: [240.0.0.0/4]
+    domain: [+.google.com, +.facebook.com, +.youtube.com]
+rule-providers:
+  Direct:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/direct.list"
+    path: ./feiyang/Direct.yaml
+    interval: 3600
+  Unban:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/unban.list"
+    path: ./feiyang/Unban.yaml
+    interval: 3600
+  RejectExtra:
+    type: http
+    behavior: classical
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/reject-extra.txt"
+    path: ./feiyang/RejectExtra.yaml
+    interval: 3600
+  Reject:
+    type: http
+    behavior: classical
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/reject.txt"
+    path: ./feiyang/Reject.yaml
+    interval: 3600
+  AI:
+    type: http
+    behavior: classical
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/AI.txt"
+    path: ./feiyang/AI.yaml
+    interval: 3600
+  AIExtra:
+    type: http
+    behavior: classical
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/AI-extra.txt"
+    path: ./feiyang/AIExtra.yaml
+    interval: 3600
+  Proxy:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/proxy.list"
+    path: ./feiyang/Proxy.yaml
+    interval: 3600
+rules:
+  - RULE-SET,Direct,🎯 全球直连
+  - RULE-SET,Unban,🎯 全球直连
+  - RULE-SET,RejectExtra,🛑 全球拦截
+  - RULE-SET,Reject,🛑 全球拦截
+  - RULE-SET,AI,✨ AI
+  - RULE-SET,AIExtra,✨ AI
+  - RULE-SET,Proxy,🚀 节点选择
+  - GEOIP,CN,🎯 全球直连
+  - MATCH,🐟 漏网之鱼

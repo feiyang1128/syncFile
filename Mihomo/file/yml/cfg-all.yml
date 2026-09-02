@@ -1,0 +1,92 @@
+custom:
+  clash_rule_base: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yml/base-all.yml"
+  enable_rule_generator: false
+  overwrite_original_rules: true
+  proxy_groups:
+    - name: 🚀 节点选择
+      type: select
+      rule:
+        - "[]♻️ 自动选择"
+        - "[]🌐 IPV6"
+        - "[]DIRECT"
+        - "[]🔮 负载-轮询"
+        - "[]🔮 负载-散列"
+        - "[]🔯 故障转移"
+        - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
+    - name: ♻️ 自动选择
+      type: url-test
+      rule:
+        - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
+      url: "http://www.gstatic.com/generate_204"
+      interval: 120
+      tolerance: 50
+      lazy: false
+    - name: 🌐 IPV6
+      type: url-test
+      rule:
+        - "[]DIRECT"
+        - ".*"
+      url: "http://[2400:3200::1]"
+      interval: 120
+      tolerance: 50
+      lazy: false
+    - name: ✨ AI
+      type: url-test
+      rule:
+        - "^(?!.*(v6|V6|ipv6|IPV6|香港|HK|台湾|TW|澳门|MO|🇭🇰|🇹🇼|🇲🇴|🇨🇳|套餐|到期|有效|剩余|版本|已用|过期|失联|测试|官网|网址|频道|备用|群|TEST|客服|网站|获取|订阅|流量|机场|下次|官址|联系|邮箱|工单|学术|USE|USED|TOTAL|EXPIRE|EMAIL)).*$"
+      url: "http://www.gstatic.com/generate_204"
+      interval: 120
+      tolerance: 50
+      lazy: false
+    - name: 🌍 cloudflare
+      type: url-test
+      rule:
+        - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
+      url: "https://speed.cloudflare.com/__down?bytes=0"
+      expected-status: 200
+      interval: 120
+      tolerance: 50
+      lazy: false
+    - name: 🔮 负载-轮询
+      type: load-balance
+      rule:
+        - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
+      url: "http://www.gstatic.com/generate_204"
+      interval: 120
+      tolerance: 50
+      strategy: round-robin
+      lazy: false
+    - name: 🔮 负载-散列
+      type: load-balance
+      rule:
+        - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
+      url: "http://www.gstatic.com/generate_204"
+      interval: 120
+      tolerance: 50
+      strategy: consistent-hashing
+      lazy: false
+    - name: 🔯 故障转移
+      type: fallback
+      rule:
+        - "^(?!.*(v6|V6|ipv6|IPV6)).*$"
+      url: "http://www.gstatic.com/generate_204"
+      interval: 120
+      lazy: false
+    - name: 🎯 全球直连
+      type: select
+      rule:
+        - "[]DIRECT"
+        - "[]🚀 节点选择"
+        - "[]♻️ 自动选择"
+    - name: 🛑 全球拦截
+      type: select
+      rule:
+        - "[]REJECT"
+        - "[]DIRECT"
+    - name: 🐟 漏网之鱼
+      type: select
+      rule:
+        - "[]🚀 节点选择"
+        - "[]🎯 全球直连"
+        - "[]♻️ 自动选择"
+        - ".*"
