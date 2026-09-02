@@ -23,10 +23,6 @@
     {
       "path": "Mihomo/file/list/unban.list",
       "url": "https://gh-proxy.org/https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list"
-    },
-    {
-      "path": "Apps/telegram.apk",
-      "url": "https://file.feiyangs.cn/TG/telegram.apk"
     }
   ]
 }
