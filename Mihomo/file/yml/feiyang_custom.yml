@@ -1,5 +1,5 @@
 custom:
-  clash_rule_base: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base.yml"
+  clash_rule_base: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yml/mihomo_rule_provider_base.yml"
   enable_rule_generator: false
   overwrite_original_rules: true
   proxy_groups:

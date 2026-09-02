@@ -27,8 +27,7 @@ rule-providers:
   CloudflareExtra:
     type: http
     behavior: classical
-    format: text
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/cloudflare-extra.list"
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/cloudflare-extra.txt"
     path: ./feiyang/CloudflareExtra.yaml
     interval: 3600
   Direct:
@@ -48,40 +47,37 @@ rule-providers:
   RejectExtra:
     type: http
     behavior: classical
-    format: text
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/reject-extra.list"
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/reject-extra.txt"
     path: ./feiyang/RejectExtra.yaml
     interval: 3600
   Reject:
     type: http
     behavior: classical
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/reject.txt"
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/reject.txt"
     path: ./feiyang/Reject.yaml
     interval: 3600
   AI:
     type: http
     behavior: classical
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/AI.txt"
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/AI.txt"
     path: ./feiyang/AI.yaml
     interval: 3600
   AIExtra:
     type: http
     behavior: classical
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/AI-extra.txt"
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/AI-extra.txt"
     path: ./feiyang/AIExtra.yaml
     interval: 3600
   CloudflareIP:
     type: http
     behavior: ipcidr
-    format: text
     url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/cf-ip/main/cloudflareip.txt"
     path: ./feiyang/CloudflareIP.yaml
     interval: 3600
   IPV6:
     type: http
     behavior: classical
-    format: text
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/ipv6.list"
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/ipv6.txt"
     path: ./feiyang/IPV6.yaml
     interval: 3600
   Proxy:

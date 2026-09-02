@@ -6,7 +6,10 @@
 
 - `TV/`：TVBox、MoonTV 等配置文件。
 - `Mihomo/file/`：Mihomo 配置、规则源、重命名脚本和兼容规则。
+- `Mihomo/file/js/`：JavaScript 脚本文件。
 - `Mihomo/file/list/`：`rule-providers` 使用的 Clash list 规则集。
+- `Mihomo/file/txt/`：`rule-providers` 使用的 txt 规则集。
+- `Mihomo/file/yml/`：Mihomo YAML 配置文件。
 - `scripts/`：从远端 URL 同步文件的脚本和清单。
 - `app/`：手动纳入仓库的小体积 APK。
 
@@ -35,11 +38,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-from-site.ps1
 
 ## Mihomo 配置
 
-订阅转换入口配置在 `Mihomo/file/feiyang_custom.yml`：
+订阅转换入口配置在 `Mihomo/file/yml/feiyang_custom.yml`：
 
 ```yaml
 custom:
-  clash_rule_base: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/mihomo_rule_provider_base.yml
+  clash_rule_base: https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/yml/mihomo_rule_provider_base.yml
   enable_rule_generator: false
   overwrite_original_rules: true
   proxy_groups:
@@ -48,7 +51,7 @@ custom:
       lazy: false
 ```
 
-YAML 配置负责订阅转换策略组；`Mihomo/file/mihomo_rule_provider_base.yml` 维护 Mihomo 基础设置、`rule-providers` 和 `rules`。策略组使用对象式 `proxy_groups` 显式设置 `lazy: false`。当前策略组包含：
+YAML 配置负责订阅转换策略组；`Mihomo/file/yml/mihomo_rule_provider_base.yml` 维护 Mihomo 基础设置、`rule-providers` 和 `rules`。策略组使用对象式 `proxy_groups` 显式设置 `lazy: false`。当前策略组包含：
 
 - `🚀 节点选择`、`♻️ 自动选择`、`🌐 IPV6`、`✨ AI`、`🌍 cloudflare`
 - `🔮 负载-轮询`、`🔮 负载-散列`、`🔯 故障转移`
@@ -62,18 +65,20 @@ interval: 180
 
 ## 规则来源
 
-`Mihomo/file/mihomo_rule_provider_base.yml` 通过 `rule-providers` 引用的 list 规则集包括：
+`Mihomo/file/yml/mihomo_rule_provider_base.yml` 通过 `rule-providers` 引用的规则集包括：
 
-- `direct`、`proxy`、`ipv6`、`cloudflare-extra`、`reject-extra`
-- `reject`：来自 `Mihomo/file/reject.txt`
-- `ai`：来自 `Mihomo/file/AI.txt`
+- `list`：`direct`、`proxy`、`unban`
+- `txt`：`ipv6`、`cloudflare-extra`、`reject-extra`
+- `reject`：来自 `Mihomo/file/txt/reject.txt`
+- `ai`：来自 `Mihomo/file/txt/AI.txt`
+- `ai-extra`：来自 `Mihomo/file/txt/AI-extra.txt`
 - `unban`：由 `scripts/sync-from-site.json` 从 ACL4SSR 同步
 
 `syncFile` workflow 每小时运行一次，会按 `scripts/sync-from-site.json` 更新：
 
 - `Mihomo/file/list/unban.list`
-- `Mihomo/file/reject.txt`
-- `Mihomo/file/AI.txt`
+- `Mihomo/file/txt/reject.txt`
+- `Mihomo/file/txt/AI.txt`
 
 ## APK 和大文件
 

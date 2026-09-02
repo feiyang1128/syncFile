@@ -62,7 +62,7 @@ const overrideConfig = {
   //     // inline：直接使用 payload 中的规则
   //     type: 'http',
   //     // type 为 http 时必填
-  //     url: 'https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/AI.txt',
+  //     url: 'https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/AI.txt',
   //     // type 为 http 时可省略，默认 ./rule/<name>.yaml
   //     // type 为 file 时必填
   //     path: './rule/aiRule.yaml',
