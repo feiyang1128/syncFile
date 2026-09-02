@@ -64,6 +64,12 @@ rule-providers:
     url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/AI.txt"
     path: ./feiyang/AI.yaml
     interval: 3600
+  AIExtra:
+    type: http
+    behavior: classical
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/AI-extra.txt"
+    path: ./feiyang/AIExtra.yaml
+    interval: 3600
   CloudflareIP:
     type: http
     behavior: ipcidr
@@ -92,6 +98,7 @@ rules:
   - RULE-SET,RejectExtra,🛑 全球拦截
   - RULE-SET,Reject,🛑 全球拦截
   - RULE-SET,AI,✨ AI
+  - RULE-SET,AIExtra,✨ AI
   - RULE-SET,CloudflareIP,🌍 cloudflare
   - RULE-SET,IPV6,🌐 IPV6
   - RULE-SET,Proxy,🚀 节点选择

@@ -1,0 +1,3 @@
+# Custom AI rules
+payload:
+  - DOMAIN-SUFFIX,krio.dev
