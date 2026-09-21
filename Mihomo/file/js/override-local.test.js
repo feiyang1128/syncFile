@@ -38,22 +38,39 @@ function main(config) {
 }
 
 function getOverrideApply() {
-  const apply =
-    typeof applyMihomoOverride === 'function'
-      ? applyMihomoOverride
-      : typeof MihomoOverride !== 'undefined'
-        ? MihomoOverride.apply
-        : null;
+  const loadedApply = getLoadedOverrideApply();
 
-  if (typeof apply === 'function') {
-    return apply;
+  if (loadedApply) {
+    return loadedApply;
   }
 
   if (typeof require === 'function') {
     return require('./override-core.test.js').apply;
   }
 
+  if (typeof importScripts === 'function') {
+    importScripts(overrideCoreUrl);
+
+    const remoteApply = getLoadedOverrideApply();
+
+    if (remoteApply) {
+      return remoteApply;
+    }
+  }
+
   throw new Error(`未加载远程 override core，请先加载：${overrideCoreUrl}`);
+}
+
+function getLoadedOverrideApply() {
+  if (typeof applyMihomoOverride === 'function') {
+    return applyMihomoOverride;
+  }
+
+  if (typeof MihomoOverride !== 'undefined' && typeof MihomoOverride.apply === 'function') {
+    return MihomoOverride.apply;
+  }
+
+  return null;
 }
 
 if (typeof module !== 'undefined' && module.exports) {
