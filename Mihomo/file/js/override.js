@@ -1,5 +1,5 @@
 // JavaScript Override
-// 通用：创建/重置分组、插入策略组、添加外部规则资源
+// 通用：创建/重置节点和分组、插入策略组、添加外部规则资源
 
 // =====================
 // 用户配置
@@ -9,10 +9,10 @@
 // 使用时取消需要部分的注释即可。
 const overrideConfig = {
   // =====================
-  // 策略组配置
+  // 代理组配置
   // =====================
   // groups: [ 
-  //     // 完整的 Mihomo 策略组配置
+  //     // 完整的 Mihomo 代理组配置
   //   {
   //     config: {
   //       name: '专线',
@@ -35,7 +35,35 @@ const overrideConfig = {
   //   },
   // ],
   // =====================
-  // 代理或策略组插入配置
+  // 代理节点配置
+  // =====================
+  // proxies: [
+  //   {
+  //     // 完整的 Mihomo 代理节点配置；name 必填
+  //     config: {
+  //       name: '自建节点',
+  //       type: 'ss',
+  //       server: 'example.com',
+  //       port: 443,
+  //       cipher: '2022-blake3-aes-128-gcm',
+  //       password: 'password',
+  //     },
+  //     // add：不存在时添加，已存在时跳过
+  //     // reset：删除同名节点后重建，不存在时直接创建
+  //     action: 'add',
+  //     // 可省略
+  //     // add 默认最后一位
+  //     // reset 默认保持原位置，不存在时放到最后
+  //     // 1 第一位，2 第二位，-1 最后一位
+  //     position: -1,
+  //     // 可省略；创建节点后顺手插入这些策略组，目标组不存在时跳过
+  //     groupNames: ['🚀 节点选择'],
+  //     // 可省略，默认插到策略组最后；1 第一位，2 第二位，-1 最后一位
+  //     groupPosition: -1,
+  //   },
+  // ],
+  // =====================
+  // 代理组插入代理节点配置
   // =====================
   // proxyInsertions: [
   //   {
@@ -118,6 +146,7 @@ function main(config) {
   const tools = createOverrideTools(config);
 
   applyGroups(tools, toArray(userConfig.groups));
+  applyProxies(tools, toArray(userConfig.proxies));
   applyProxyInsertions(tools, toArray(userConfig.proxyInsertions));
   applyRuleProviders(tools, toArray(userConfig.ruleProviders));
   applyRules(tools, userConfig.rules);
@@ -127,7 +156,7 @@ function main(config) {
 
 // 判断是否存在需要执行的用户配置
 function hasOverrideConfig(userConfig) {
-  const hasListConfig = [userConfig.groups, userConfig.proxyInsertions, userConfig.ruleProviders].some((item) => Array.isArray(item) && item.length > 0);
+  const hasListConfig = [userConfig.groups, userConfig.proxies, userConfig.proxyInsertions, userConfig.ruleProviders].some((item) => Array.isArray(item) && item.length > 0);
 
   if (hasListConfig) {
     return true;
@@ -153,6 +182,10 @@ function hasOverrideConfig(userConfig) {
 // =====================
 
 function initializeConfig(config) {
+  if (!Array.isArray(config.proxies)) {
+    config.proxies = [];
+  }
+
   if (!Array.isArray(config['proxy-groups'])) {
     config['proxy-groups'] = [];
   }
@@ -183,6 +216,26 @@ function applyGroups(tools, groups) {
     } else {
       tools.addGroup(item.config, item.position);
     }
+  });
+}
+
+function applyProxies(tools, proxies) {
+  proxies.forEach((item) => {
+    const proxyName = item?.action === 'reset' ? tools.resetProxy(item.config, item.position) : tools.addProxy(item?.config, item?.position);
+
+    if (!proxyName) {
+      return;
+    }
+
+    const groupNames = Array.isArray(item.groupNames) ? item.groupNames : Array.isArray(item.groupName) ? item.groupName : [item.groupName];
+    const groupPosition = Number.isInteger(item.groupPosition) ? item.groupPosition : -1;
+
+    groupNames
+      .map((groupName) => (typeof groupName === 'string' ? groupName.trim() : ''))
+      .filter(Boolean)
+      .forEach((groupName) => {
+        tools.insertProxy(groupName, proxyName, groupPosition);
+      });
   });
 }
 
@@ -250,11 +303,79 @@ function applyRules(tools, rulesConfig) {
 // =====================
 
 function createOverrideTools(config) {
+  const proxies = config.proxies;
   const groups = config['proxy-groups'];
+
+  // 获取代理节点
+  const getProxy = (name) => {
+    return proxies.find((item) => item.name === name);
+  };
 
   // 获取分组
   const getGroup = (name) => {
     return groups.find((item) => item.name === name);
+  };
+
+  const normalizeProxyConfig = (proxyConfig) => {
+    if (!proxyConfig || typeof proxyConfig !== 'object' || Array.isArray(proxyConfig)) {
+      return null;
+    }
+
+    const name = typeof proxyConfig.name === 'string' ? proxyConfig.name.trim() : '';
+
+    if (!name) {
+      return null;
+    }
+
+    return {
+      ...proxyConfig,
+      name,
+    };
+  };
+
+  // 添加代理节点
+  // position:
+  // 1  第一位
+  // 2  第二位
+  // -1 最后一位
+  const addProxy = (proxyConfig, position = -1) => {
+    const normalizedConfig = normalizeProxyConfig(proxyConfig);
+
+    if (!normalizedConfig) {
+      return null;
+    }
+
+    if (getProxy(normalizedConfig.name)) {
+      return normalizedConfig.name;
+    }
+
+    insertAt(proxies, normalizedConfig, position);
+
+    return normalizedConfig.name;
+  };
+
+  // 重置代理节点
+  // 未指定 position：
+  // - 节点存在时保持原位置
+  // - 节点不存在时放到最后
+  const resetProxy = (proxyConfig, position) => {
+    const normalizedConfig = normalizeProxyConfig(proxyConfig);
+
+    if (!normalizedConfig) {
+      return null;
+    }
+
+    const oldIndex = proxies.findIndex((item) => item.name === normalizedConfig.name);
+
+    if (oldIndex !== -1) {
+      proxies.splice(oldIndex, 1);
+    }
+
+    const targetPosition = position === undefined ? (oldIndex === -1 ? -1 : oldIndex + 1) : position;
+
+    insertAt(proxies, normalizedConfig, targetPosition);
+
+    return normalizedConfig.name;
   };
 
   // 添加分组
@@ -408,7 +529,10 @@ function createOverrideTools(config) {
   };
 
   return {
+    getProxy,
     getGroup,
+    addProxy,
+    resetProxy,
     addGroup,
     resetGroup,
     insertProxy,
