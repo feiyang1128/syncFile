@@ -57,19 +57,22 @@ const overrideConfig = {
   //     // 1 第一位，2 第二位，-1 最后一位
   //     position: -1,
   //     // 可省略；创建节点后顺手插入这些策略组，目标组不存在时跳过
+  //     // 不写 groupNames/groupName：不干预分组；若源配置有 include-all: true，节点仍会被自动包含
+  //     // groupNames: []：明确不加入任何分组；节点会被自动排除出所有 include-all: true 的分组
+  //     // groupNames: ['分组名']：只加入指定分组；节点会被自动排除出其它 include-all: true 的分组
   //     groupNames: ['🚀 节点选择'],
   //     // 可省略，默认插到策略组最后；1 第一位，2 第二位，-1 最后一位
   //     groupPosition: -1,
   //   },
   // ],
   // =====================
-  // 代理组插入代理节点配置
+  // 代理组插入代理组配置
   // =====================
   // proxyInsertions: [
   //   {
   //     // 目标分组名称；不存在时跳过
   //     groupName: '良心云',
-  //     // 要插入的代理或策略组名称
+  //     // 要插入的策略组名称；不存在时跳过
   //     // 空字符串、纯空格和非字符串值会被忽略
   //     proxyNames: ['专线'],
   //     // 可省略，默认从第一位开始连续插入
@@ -227,33 +230,41 @@ function applyProxies(tools, proxies) {
       return;
     }
 
-    const groupNames = Array.isArray(item.groupNames) ? item.groupNames : Array.isArray(item.groupName) ? item.groupName : [item.groupName];
+    const hasGroupConfig = Object.prototype.hasOwnProperty.call(item, 'groupNames') || Object.prototype.hasOwnProperty.call(item, 'groupName');
+    const groupNameConfig = Array.isArray(item.groupNames) ? item.groupNames : Array.isArray(item.groupName) ? item.groupName : [item.groupName];
+    const groupNames = groupNameConfig
+      .map((groupName) => (typeof groupName === 'string' ? groupName.trim() : ''))
+      .filter(Boolean);
     const groupPosition = Number.isInteger(item.groupPosition) ? item.groupPosition : -1;
 
-    groupNames
-      .map((groupName) => (typeof groupName === 'string' ? groupName.trim() : ''))
-      .filter(Boolean)
-      .forEach((groupName) => {
-        tools.insertProxy(groupName, proxyName, groupPosition);
-      });
+    if (hasGroupConfig) {
+      tools.excludeProxyFromOtherIncludeAllGroups(proxyName, groupNames);
+    }
+
+    groupNames.forEach((groupName) => {
+      tools.insertProxy(groupName, proxyName, groupPosition);
+    });
   });
 }
 
 function applyProxyInsertions(tools, proxyInsertions) {
   proxyInsertions.forEach((item) => {
+    const groupName = typeof item.groupName === 'string' ? item.groupName.trim() : '';
+
     // 优先使用 proxyNames，同时兼容原有的 proxyName 写法
-    const proxyNames = Array.isArray(item.proxyNames) ? item.proxyNames : Array.isArray(item.proxyName) ? item.proxyName : [item.proxyName];
+    const proxyNames = (Array.isArray(item.proxyNames) ? item.proxyNames : Array.isArray(item.proxyName) ? item.proxyName : [item.proxyName])
+      .map((proxyName) => (typeof proxyName === 'string' ? proxyName.trim() : ''))
+      .filter(Boolean);
 
     const startPosition = Number.isInteger(item.position) ? item.position : 1;
 
-    proxyNames
-      .map((proxyName) => (typeof proxyName === 'string' ? proxyName.trim() : ''))
-      .filter(Boolean)
-      .forEach((proxyName, index) => {
-        const position = startPosition === -1 ? -1 : startPosition + index;
+    proxyNames.forEach((proxyName, index) => {
+      const position = startPosition === -1 ? -1 : startPosition + index;
 
-        tools.insertProxy(item.groupName, proxyName, position);
-      });
+      if (tools.getGroup(proxyName)) {
+        tools.insertProxy(groupName, proxyName, position);
+      }
+    });
   });
 }
 
@@ -417,7 +428,7 @@ function createOverrideTools(config) {
 
     // 目标分组不存在时安全跳过
     if (!group) {
-      return;
+      return false;
     }
 
     if (!Array.isArray(group.proxies)) {
@@ -432,6 +443,23 @@ function createOverrideTools(config) {
     }
 
     insertAt(group.proxies, proxyName, position);
+    return true;
+  };
+
+  const excludeProxyFromOtherIncludeAllGroups = (proxyName, includedGroupNames) => {
+    const includedGroupNameSet = new Set(
+      toArray(includedGroupNames)
+        .map((groupName) => (typeof groupName === 'string' ? groupName.trim() : ''))
+        .filter(Boolean)
+    );
+
+    groups.forEach((group) => {
+      if (!group || group['include-all'] !== true || includedGroupNameSet.has(group.name)) {
+        return;
+      }
+
+      appendExcludeFilter(group, proxyName);
+    });
   };
 
   // 插入规则
@@ -536,6 +564,7 @@ function createOverrideTools(config) {
     addGroup,
     resetGroup,
     insertProxy,
+    excludeProxyFromOtherIncludeAllGroups,
     insertRule,
     insertRuleBeforeMatch,
     resetRules,
@@ -562,4 +591,29 @@ function insertAt(list, item, position = -1) {
   }
 
   list.splice(targetIndex, 0, item);
+}
+
+function appendExcludeFilter(group, proxyName) {
+  if (typeof proxyName !== 'string' || !proxyName.trim()) {
+    return;
+  }
+
+  const escapedProxyName = escapeRegExp(proxyName.trim());
+  const proxyNamePattern = `^${escapedProxyName}$`;
+  const currentFilter = typeof group['exclude-filter'] === 'string' ? group['exclude-filter'].trim() : '';
+
+  if (!currentFilter) {
+    group['exclude-filter'] = proxyNamePattern;
+    return;
+  }
+
+  if (currentFilter.includes(proxyNamePattern)) {
+    return;
+  }
+
+  group['exclude-filter'] = `${currentFilter}|${proxyNamePattern}`;
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
