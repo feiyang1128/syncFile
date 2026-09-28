@@ -1,8 +1,14 @@
 # Proxy extra rules that should take priority over reject rules.
 
 # Google Play / Android downloads
+DOMAIN-KEYWORD,google
 DOMAIN,dl.google.com
 DOMAIN,android.clients.google.com
+DOMAIN-SUFFIX,android.com
+DOMAIN-SUFFIX,ggpht.com
+DOMAIN-SUFFIX,googleapis.com
+DOMAIN-SUFFIX,googlezip.net
+DOMAIN-SUFFIX,googlevideo.com
 DOMAIN-SUFFIX,play.googleapis.com
 DOMAIN-SUFFIX,gvt0.com
 DOMAIN-SUFFIX,gvt1.com
