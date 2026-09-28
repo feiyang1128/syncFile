@@ -92,6 +92,9 @@ rule-providers:
     path: ./feiyang/Proxy.yaml
     interval: 3600
 rules:
+  - DOMAIN-SUFFIX,services.googleapis.cn,🚀 节点选择
+  - DOMAIN-SUFFIX,xn--ngstr-lra8j.com,🚀 节点选择
+  - DOMAIN,dl.google.com,🚀 节点选择
   - RULE-SET,Direct,🎯 全球直连
   - RULE-SET,Unban,🎯 全球直连
   - RULE-SET,RejectExtra,🛑 全球拦截
