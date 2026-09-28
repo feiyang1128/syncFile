@@ -47,13 +47,6 @@ rule-providers:
     url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/direct.list"
     path: ./feiyang/Direct.yaml
     interval: 3600
-  ProxyExtra:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/proxy-extra.list"
-    path: ./feiyang/ProxyExtra.yaml
-    interval: 3600
   Unban:
     type: http
     behavior: classical
@@ -94,7 +87,6 @@ rule-providers:
     interval: 3600
 rules:
   - RULE-SET,Direct,🎯 全球直连
-  - RULE-SET,ProxyExtra,🚀 节点选择
   - RULE-SET,Unban,🎯 全球直连
   - RULE-SET,RejectExtra,🛑 全球拦截
   - RULE-SET,Reject,🛑 全球拦截
