@@ -46,6 +46,13 @@ rule-providers:
     url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/txt/cloudflare-extra.txt"
     path: ./feiyang/CloudflareExtra.yaml
     interval: 3600
+  GooglePlay:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://gh-proxy.org/https://raw.githubusercontent.com/feiyang1128/syncFile/refs/heads/main/Mihomo/file/list/google-play.list"
+    path: ./feiyang/GooglePlay.yaml
+    interval: 3600
   Direct:
     type: http
     behavior: classical
@@ -98,9 +105,7 @@ rule-providers:
     path: ./feiyang/Proxy.yaml
     interval: 3600
 rules:
-  - DOMAIN-SUFFIX,services.googleapis.cn,🚀 节点选择
-  - DOMAIN-SUFFIX,xn--ngstr-lra8j.com,🚀 节点选择
-  - DOMAIN,dl.google.com,🚀 节点选择
+  - RULE-SET,GooglePlay,🚀 节点选择
   - RULE-SET,CloudflareExtra,🌍 cloudflare
   - RULE-SET,Direct,🎯 全球直连
   - RULE-SET,Unban,🎯 全球直连
