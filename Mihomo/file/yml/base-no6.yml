@@ -107,8 +107,8 @@ rule-providers:
 rules:
   - RULE-SET,CloudflareExtra,🌍 cloudflare
   - RULE-SET,Direct,🎯 全球直连
-  - RULE-SET,Unban,🎯 全球直连
   - RULE-SET,ProxyExtra,🚀 节点选择
+  - RULE-SET,Unban,🎯 全球直连
   - RULE-SET,RejectExtra,🛑 全球拦截
   - RULE-SET,Reject,🛑 全球拦截
   - RULE-SET,AI,✨ AI
