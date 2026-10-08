@@ -135,6 +135,16 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
-    }
+    },
+    {
+      "key": "hongguo",
+      "name": "红果短剧",
+      "type": 3,
+      "api": "csp_Hongguo",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "jar": "https://gh-proxy.org/https://github.com/feiyang1128/syncFile/raw/refs/heads/main/TV/hongguo.jar"
+    } 
   ]
 }
