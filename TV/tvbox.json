@@ -16,8 +16,7 @@
       "api": "https://okzy.feiyangs.cn/",
       "searchable": 1, 
       "quickSearch": 1, 
-      "filterable": 1,
-      "playUrl": "https://jiexi.okzyw.org/m3u8/?url="
+      "filterable": 1
     },
     {
       "key": "dianyingtiantang",
@@ -144,7 +143,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "jar": "https://gh-proxy.org/https://github.com/feiyang1128/syncFile/raw/refs/heads/main/TV/hongguo.jar"
-    } 
+      "jar": "https://tvconfig.feiyangs.cn/hongguo.jar"
+    }
   ]
 }
