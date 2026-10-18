@@ -134,7 +134,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
-    },
+    }/*,
     {
       "key": "hongguo",
       "name": "红果短剧",
@@ -144,6 +144,6 @@
       "quickSearch": 1,
       "filterable": 0,
       "jar": "https://tvconfig.feiyangs.cn/hongguo.jar"
-    }
+    }*/
   ]
 }
