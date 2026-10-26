@@ -39,6 +39,9 @@ dns:
       - +.google.com
       - +.facebook.com
       - +.youtube.com
+  direct-nameserver:
+    - system
+  direct-nameserver-follow-policy: false
 rule-providers:
   CloudflareExtra:
     type: http

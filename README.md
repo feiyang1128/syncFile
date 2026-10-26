@@ -115,6 +115,10 @@ powershell -ExecutionPolicy Bypass -File .\scripts\install-git-hooks.ps1
 
 ## 自动化
 
-仓库包含两个 GitHub Actions：
+仓库通过 `syncFile` GitHub Actions 自动更新文件：
 
 - `syncFile`：每小时运行一次，按 `scripts/sync-from-site.json` 同步远端文件。
+- 在 GitHub 网页编辑文件并提交到 `main`，或将本地修改推送到 `main` 后，立即触发相关配置生成；实际完成时间取决于 Actions 排队和运行时间。
+- 每次提交都会执行 `scripts/build-mihomo-base.ps1`，将 `Mihomo/file/yml/base-common.yml` 的公共配置更新到 `base-all.yml`、`base-no6.yml`、`base-nocf.yml`、`base-no6nocf.yml`，保留各文件从 `rule-providers:` 开始的独立配置，并自动提交生成结果。公共配置应修改 `base-common.yml`。
+- 提交触发的任务只生成依赖文件；定时或手动运行工作流时才下载上游文件。直接通过 URL 引用的规则和脚本无需重新生成，客户端按自身刷新周期获取更新。
+- 同一分支的任务串行运行；自动提交使用 `GITHUB_TOKEN`，不会重复触发工作流。

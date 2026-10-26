@@ -1,6 +1,9 @@
 name: syncFile
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
   schedule:
     - cron: "0 * * * *"
@@ -8,8 +11,50 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: syncFile-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
+  update-related:
+    if: github.event_name == 'push'
+    runs-on: windows-latest
+    steps:
+      - name: Checkout latest branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Generate related Mihomo configs
+        shell: pwsh
+        run: |
+          .\scripts\build-mihomo-base.ps1
+          .\scripts\build-mihomo-base.ps1 -Check
+
+      - name: Commit and push generated configs
+        shell: pwsh
+        run: |
+          git add -- Mihomo/file/yml/base-all.yml Mihomo/file/yml/base-no6.yml Mihomo/file/yml/base-nocf.yml Mihomo/file/yml/base-no6nocf.yml
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "Related configs are already up to date."
+            exit 0
+          }
+          if ($LASTEXITCODE -ne 1) {
+            throw "Failed to inspect generated config changes."
+          }
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update related Mihomo configs"
+          if ($LASTEXITCODE -ne 0) { throw "Failed to commit generated configs." }
+          git pull --rebase origin "${{ github.ref_name }}"
+          if ($LASTEXITCODE -ne 0) { throw "Failed to rebase generated configs." }
+          git push
+          if ($LASTEXITCODE -ne 0) { throw "Failed to push generated configs." }
+
   sync:
+    if: github.event_name != 'push'
     runs-on: windows-latest
     env:
       RELEASE_TAG: synced-assets-latest
@@ -20,6 +65,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Sync files from site
