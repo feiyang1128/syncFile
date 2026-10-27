@@ -134,16 +134,16 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1
-    }/*,
+    },
     {
       "key": "hongguo",
       "name": "红果短剧",
-      "type": 3,
-      "api": "csp_Hongguo",
+      "type": 1,
+      "api": "https://hongguo.feiyangs.cn/api/json",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "jar": "https://tvconfig.feiyangs.cn/hongguo.jar"
-    }*/
+      "timeout":60
+    }
   ]
 }
