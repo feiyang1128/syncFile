@@ -138,12 +138,12 @@
     {
       "key": "hongguo",
       "name": "红果短剧",
-      "type": 1,
-      "api": "https://hongguo.feiyangs.cn/api/json",
+      "type": 3,
+      "api": "csp_Hongguo",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0,
-      "timeout":60
+      "jar": "https://tvconfig.feiyangs.cn/hongguo.jar"
     }
   ]
 }
